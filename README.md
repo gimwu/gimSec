@@ -38,3 +38,54 @@
 
 # 四、实体类表
 
+## 用户表
+
+|     字段名      |     类型     |        说明        |
+| :-------------: | :----------: | :----------------: |
+|       id        | varchar(255) |                    |
+|      email      | varchar(255) |  邮箱，可用于登录  |
+|    nickname     | varchar(255) |                    |
+|    password     | varchar(255) |                    |
+|     avatar      | varchar(255) |        头像        |
+|    telphone     | varchar(255) |  手机，可用于登录  |
+|   create_time   |     Date     | 创建时间(注册时间) |
+|   update_time   |     Date     |      更新时间      |
+| last_login_time |     Date     |  最后一次登录时间  |
+|   is_erchant    |   boolean    |     是否是商家     |
+
+## 管理员表
+
+|     字段名      |     类型     |       说明       |
+| :-------------: | :----------: | :--------------: |
+|       id        | varchar(255) |                  |
+|    username     | varchar(255) |    管理员账号    |
+|    nickname     | varchar(255) |    管理员名称    |
+|    password     | varchar(255) |    管理员密码    |
+|     avatar      | varchar(255) |       头像       |
+|      level      | varchar(255) |    管理员级别    |
+|   create_time   |     Date     |     创建时间     |
+|   update_time   |     Date     |     更新时间     |
+| last_login_time |     Date     | 最后一次登录时间 |
+
+## 普通商品表
+
+|       字段名       |     类型     |          说明          |
+| :----------------: | :----------: | :--------------------: |
+|         id         | varchar(255) |                        |
+|        name        | varchar(255) |        商品名称        |
+|       price        |    Decime    |        商品价格        |
+|       stock        |   Integer    |        商品库存        |
+|       photo        | varchar(255) |        商品图片        |
+|      content       | varchar(255) |        商品介绍        |
+| belong_username_id | varchar(255) |       所属商家id       |
+|  belong_username   | varchar(255) | 所属商家名称(冗余名称) |
+
+## 普通商品订单表(单个)
+
+|   字段名    |     类型     |    说明    |
+| :---------: | :----------: | :--------: |
+|     id      | varchar(255) |            |
+|  goods_id   | varchar(255) |   商品id   |
+| username_id | varchar(255) | 购买用户id |
+|  goods_num  |   Integer    |  商品数量  |
+
