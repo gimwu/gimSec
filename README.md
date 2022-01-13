@@ -26,3 +26,15 @@
 
 ![Image text](https://github.com/gimwu/gimSec/blob/README/image/mainFlow.jpg)
 
+## 注册/登录流程图
+
+![Image text](https://github.com/gimwu/gimSec/blob/README/image/registerLoginFlow.jpg)
+
+## 用户购买流程图
+
+![Image text](https://github.com/gimwu/gimSec/blob/README/image/userPayFlow.jpg)
+
+
+
+# 四、实体类表
+
