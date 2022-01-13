@@ -24,5 +24,5 @@
 
 ## 主流程图
 
-![Image text](https://github.com/gimwu/gimSec/blob/README/image/%E4%B8%BB%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg)
+![Image text](https://github.com/gimwu/gimSec/blob/README/image/mainFlow.jpg)
 
