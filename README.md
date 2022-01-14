@@ -52,6 +52,7 @@
 |   update_time   |     Date     |      更新时间      |
 | last_login_time |     Date     |  最后一次登录时间  |
 |   is_erchant    |   boolean    |     是否是商家     |
+|      state      | varchar(255) |        状态        |
 
 ## 管理员表
 
@@ -66,6 +67,7 @@
 |   create_time   |     Date     |     创建时间     |
 |   update_time   |     Date     |     更新时间     |
 | last_login_time |     Date     | 最后一次登录时间 |
+|      state      | varchar(255) |       状态       |
 
 ## 普通商品表
 
@@ -79,8 +81,9 @@
 |      content       | varchar(255) |        商品介绍        |
 | belong_username_id | varchar(255) |       所属商家id       |
 |  belong_username   | varchar(255) | 所属商家名称(冗余名称) |
+|       state        | varchar(255) |          状态          |
 
-## 普通商品订单表(单个)
+## 普通商品订单项目表(单个)
 
 |   字段名    |     类型     |    说明    |
 | :---------: | :----------: | :--------: |
@@ -88,4 +91,32 @@
 |  goods_id   | varchar(255) |   商品id   |
 | username_id | varchar(255) | 购买用户id |
 |  goods_num  |   Integer    |  商品数量  |
+|    price    |   Demical    |  总共价格  |
+| createTime  |     Date     |            |
+| updateTime  |     Date     |            |
+|    state    | varchar(255) |    状态    |
+
+## 普通商品订单与订单项目关联表
+
+|      字段名      |     类型     |    说明    |
+| :--------------: | :----------: | :--------: |
+|        id        | varchar(255) |            |
+|     order_id     | varchar(255) |   订单Id   |
+|  order_item_id   | varchar(255) | 订单项目id |
+| order_item_price |   Demical    |  项目总价  |
+|   create_time    |     Date     |  创建时间  |
+|   update_time    |     Date     |  更新时间  |
+|      state       | varchar(255) |    状态    |
+
+## 普通商品订单表
+
+|      字段名      |     类型     |     说明     |
+| :--------------: | :----------: | :----------: |
+|        id        | varchar(255) |              |
+|      price       |   Demical    |   订单总价   |
+|  belong_user_id  | varchar(255) |  所属用户id  |
+| belong_user_name | varchar(255) | 所属用户名称 |
+|   create_time    |     Date     |   创建时间   |
+|   update_time    |     Date     |   更新时间   |
+|      state       | varchar(255) |     状态     |
 
