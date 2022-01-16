@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	Database  *sql.DB
-	msyqlGorm *gorm.DB
+	Database          *sql.DB
+	GormMysqlDatabase *gorm.DB
 )
 
 func MysqlConnection(hostname string, port int, username string, password string, dbname string) (*sql.DB, error) {
@@ -23,11 +23,12 @@ func MysqlConnection(hostname string, port int, username string, password string
 	return Database, nil
 }
 
-func gormMysqlConnection(hostname string, port int, username string, password string, dbname string) (*gorm.DB, error) {
+func GormMysqlConnection(hostname string, port int, username string, password string, dbname string) (*gorm.DB, error) {
+	var err error
 	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, hostname, port, dbname)
-	msyqlGorm, err := gorm.Open(mysql.Open(dns))
+	GormMysqlDatabase, err = gorm.Open(mysql.Open(dns))
 	if err != nil {
 		return nil, err
 	}
-	return msyqlGorm, nil
+	return GormMysqlDatabase, nil
 }
