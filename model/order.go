@@ -11,8 +11,8 @@ type Order struct {
 	model.StateFullEntity
 
 	//price 订单总价
-	price decimal.Decimal
+	Price decimal.Decimal
 
 	//所属用户id
-	belongUserId string
+	BelongUserId string
 }

@@ -11,23 +11,23 @@ type User struct {
 	model.StateFullEntity
 
 	//email 邮箱
-	email string
+	Email string
 
 	//nickname 昵称
-	nickname string
+	Nickname string
 
 	//password 密码
-	password string
+	Password string
 
 	//avatar 头像
-	avatar string
+	Avatar string
 
 	//phone 电话
-	phone string
+	Phone string
 
 	//最后一次登录时间
-	lastLoginTime time.Time
+	LastLoginTime time.Time
 
 	//是否是商家
-	isErchant bool
+	IsErchant bool
 }
