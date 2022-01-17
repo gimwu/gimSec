@@ -11,14 +11,14 @@ type GoodsOrderItem struct {
 	model.StateFullEntity
 
 	//goodId 商品id
-	goodId string
+	GoodId string
 
 	//usernameId 购买用户id
-	usernameId string
+	UsernameId string
 
 	//goodsNum 购买商品数量
-	goodsNum uint
+	GoodsNum uint
 
 	//price 总共价格
-	price decimal.Decimal
+	Price decimal.Decimal
 }

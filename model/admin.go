@@ -11,20 +11,20 @@ type Admin struct {
 	model.StateFullEntity
 
 	//username 账号
-	username string
+	Username string
 
 	//nickname 昵称
-	nickname string
+	Nickname string
 
 	//password 密码
-	password string
+	Password string
 
 	//avatar 头像
-	avatar string
+	Avatar string
 
 	//level 级别
-	level string
+	Level string
 
 	//lastLoginTime 最后一次登录时间
-	lastLoginTime time.Time
+	LastLoginTime time.Time
 }

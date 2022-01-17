@@ -11,20 +11,20 @@ type Goods struct {
 	model.StateFullEntity
 
 	//name 商品名称
-	name string
+	Name string
 
 	//price 商品价格
-	price decimal.Decimal
+	Price decimal.Decimal
 
 	//stock 商品库存
-	stock uint64
+	Stock uint64
 
 	//photo 商品图片
-	photo string
+	Photo string
 
 	//商品描述
-	content string
+	Content string
 
 	//商品所属商家id
-	belongUsernameId string
+	BelongUsernameId string
 }
