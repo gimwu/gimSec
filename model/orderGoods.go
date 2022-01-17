@@ -11,11 +11,11 @@ type OrderGoods struct {
 	model.StateFullEntity
 
 	//orderId 订单id
-	orderId string
+	OrderId string
 
 	//orderItemId 订单项目id
-	orderItemId string
+	OrderItemId string
 
 	//orderItemPrice 项目总价
-	orderItemPrice decimal.Decimal
+	OrderItemPrice decimal.Decimal
 }
