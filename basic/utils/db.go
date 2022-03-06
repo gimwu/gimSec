@@ -25,7 +25,7 @@ func MysqlConnection(hostname string, port int, username string, password string
 
 func GormMysqlConnection(hostname string, port int, username string, password string, dbname string) (*gorm.DB, error) {
 	var err error
-	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, hostname, port, dbname)
+	dns := fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, hostname, port, dbname)
 	GormMysqlDatabase, err = gorm.Open(mysql.Open(dns))
 	if err != nil {
 		return nil, err

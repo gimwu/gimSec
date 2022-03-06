@@ -1,9 +1,13 @@
 package model
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type StateFullEntity struct {
-	Id         string
+	gorm.Model
+	Id         string `gorm:"type:varchar(255);not null'"`
 	CreateTime time.Time
 	UpdateTime time.Time
 	State      string
