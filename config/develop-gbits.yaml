@@ -1,0 +1,11 @@
+runMode: debug
+server:
+  HTTPPort: 8080
+
+database:
+  type: mysql
+  user: root2
+  password: Gbdv470365234
+  host: localhost
+  dbName: test
+  port: 3306
