@@ -2,6 +2,7 @@ package server
 
 import (
 	"gimSec/basic/logging"
+	"gimSec/basic/utils"
 	"gimSec/model"
 )
 
@@ -10,6 +11,7 @@ func GetGoods(id string) (*model.Goods, error) {
 }
 
 func AddGoods(goods *model.Goods) error {
+	goods.Id = utils.SnowFlake.NextVal()
 	return model.AddGoods(goods)
 }
 
