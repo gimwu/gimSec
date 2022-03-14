@@ -1,6 +1,8 @@
 package model
 
-import "gimSec/basic/model"
+import (
+	"gimSec/basic/model"
+)
 
 type User struct {
 	model.StateFullEntity
