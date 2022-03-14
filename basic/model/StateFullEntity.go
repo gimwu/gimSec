@@ -6,6 +6,5 @@ import (
 
 type StateFullEntity struct {
 	gorm.Model
-	Id    string `gorm:"primary_key type:varchar(255);not null'"`
-	State string
+	Id string `gorm:"primarykey type:varchar(255);not null'"`
 }
