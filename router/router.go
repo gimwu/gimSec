@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	v1 "gimSec/router/api/v1"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -14,6 +15,14 @@ func InitRouter() *gin.Engine {
 	r.Use(Cors())
 	r.Use(gin.Recovery())
 
+	apiv1 := r.Group("/api/v1")
+	goodsApi := apiv1.Group("/goods")
+
+	goodsApi.POST("/goods", v1.AddGoods)
+	goodsApi.DELETE("/goods/:id", v1.DeleteGoods)
+	goodsApi.PUT("/goods/:id", v1.EditGoods)
+	goodsApi.GET("/goods/:id", v1.GetGoods)
+	goodsApi.GET("/queryGoodsPage", v1.QueryGoodsPage)
 	return r
 }
 
