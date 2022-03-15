@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"strconv"
 	"sync"
 	"time"
 )
@@ -34,7 +35,7 @@ func init() {
 	SnowFlake = &Snowflake{}
 }
 
-func (s *Snowflake) NextVal() int64 {
+func (s *Snowflake) NextVal() string {
 	s.Lock()
 	now := time.Now().UnixNano() / 1000000 // 转毫秒
 	if s.timestamp == now {
@@ -54,10 +55,11 @@ func (s *Snowflake) NextVal() int64 {
 	t := now - epoch
 	if t > timestampMax {
 		s.Unlock()
-		return 0
+		return ""
 	}
 	s.timestamp = now
 	r := int64((t)<<timestampShift | (s.datacenterid << datacenteridShift) | (s.workerid << workeridShift) | (s.sequence))
 	s.Unlock()
-	return r
+	return strconv.FormatInt(r, 10)
+
 }
