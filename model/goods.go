@@ -64,7 +64,7 @@ func DeleteGoods(goods *Goods) error {
 
 func QueryGoodsPage(params interface{}, currentPage int, pageSize int) ([]*Goods, error) {
 	var GoodsList []*Goods
-	err := db.Where(params).Offset(currentPage).Limit(pageSize).Find(&GoodsList).Error
+	err := db.Model(&Goods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func QueryGoodsPage(params interface{}, currentPage int, pageSize int) ([]*Goods
 
 func QueryGoodsCount(params interface{}) (int64, error) {
 	var count int64
-	err := db.Model(&Goods{}).Where(params).Count(&count).Error
+	err := db.Model(&Goods{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

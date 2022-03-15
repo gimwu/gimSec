@@ -6,6 +6,7 @@ import (
 	"gimSec/model"
 	"gimSec/server"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func AddGoods(c *gin.Context) {
@@ -96,8 +97,9 @@ func GetGoods(c *gin.Context) {
 func QueryGoodsPage(c *gin.Context) {
 	json := make(map[string]interface{})
 	utils.BindJson(c, &json)
-	currentPage := json["pageNum"].(int)
-	pageSize := json["pageSize"].(int)
+	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	logging.Debug(currentPage, pageSize)
 	data, err := server.QueryGoodsPage(&json, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryGoodsPage Error:", err)
