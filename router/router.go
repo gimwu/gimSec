@@ -16,16 +16,17 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	apiv1 := r.Group("/api/v1")
-	goodsApi := apiv1.Group("/goods")
 
-	goodsApi.POST("/goods", v1.AddGoods)
-	goodsApi.DELETE("/goods/:id", v1.DeleteGoods)
-	goodsApi.PUT("/goods/:id", v1.EditGoods)
-	goodsApi.GET("/goods/:id", v1.GetGoods)
-	goodsApi.GET("/queryGoodsPage", v1.QueryGoodsPage)
+	apiv1.POST("/goods", v1.AddGoods)
+	apiv1.DELETE("/goods/:id", v1.DeleteGoods)
+	apiv1.PUT("/goods/:id", v1.EditGoods)
+	apiv1.GET("/goods/:id", v1.GetGoods)
+	apiv1.GET("/queryGoodsPage", v1.QueryGoodsPage)
+
+	apiv1.POST("/user", v1.AddUser)
+	apiv1.GET("/user/:id", v1.GetUser)
 	return r
 }
-
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method
