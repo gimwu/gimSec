@@ -43,3 +43,37 @@ func GetUser(id string) (*User, error) {
 	}
 	return &user, nil
 }
+
+func EditUser(user *User) error {
+	err := db.Updates(user).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func Login(user *User) error {
+	err := db.Where("Telephone = ? and Password =?", user.Telephone, user.Password).First(&user).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func QueryUserPage(params interface{}, currentPage int, pageSize int) ([]*User, error) {
+	var UserList []*User
+	err := db.Model(&User{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&UserList).Error
+	if err != nil {
+		return nil, err
+	}
+	return UserList, nil
+}
+
+func QueryUserCount(params interface{}) (int64, error) {
+	var count int64
+	err := db.Model(&User{}).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

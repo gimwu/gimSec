@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"gimSec/basic/jwt"
 	v1 "gimSec/router/api/v1"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -17,14 +18,22 @@ func InitRouter() *gin.Engine {
 
 	apiv1 := r.Group("/api/v1")
 
-	apiv1.POST("/goods", v1.AddGoods)
-	apiv1.DELETE("/goods/:id", v1.DeleteGoods)
-	apiv1.PUT("/goods/:id", v1.EditGoods)
-	apiv1.GET("/goods/:id", v1.GetGoods)
-	apiv1.GET("/queryGoodsPage", v1.QueryGoodsPage)
-
 	apiv1.POST("/user", v1.AddUser)
-	apiv1.GET("/user/:id", v1.GetUser)
+	apiv1.POST("/user/login", v1.Login)
+
+	apiv1.Use(jwt.AuthMiddleware())
+	{
+		apiv1.POST("/goods", v1.AddGoods)
+		apiv1.DELETE("/goods/:id", v1.DeleteGoods)
+		apiv1.PUT("/goods/:id", v1.EditGoods)
+		apiv1.GET("/goods/:id", v1.GetGoods)
+		apiv1.GET("/queryGoodsPage", v1.QueryGoodsPage)
+
+		apiv1.PUT("/user", v1.EditUser)
+		apiv1.GET("/user/:id", v1.GetUser)
+		apiv1.GET("/user/queryUserPage", v1.QueryUserPage)
+	}
+
 	return r
 }
 func Cors() gin.HandlerFunc {
