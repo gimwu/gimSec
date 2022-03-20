@@ -20,7 +20,8 @@ func InitRouter() *gin.Engine {
 
 	apiv1.POST("/user", v1.AddUser)
 	apiv1.POST("/user/login", v1.Login)
-
+	apiv1.POST("/admin", v1.AddAdmin)
+	apiv1.POST("/admin/login", v1.AdminLogin)
 	apiv1.Use(jwt.AuthMiddleware())
 	{
 		apiv1.POST("/goods", v1.AddGoods)

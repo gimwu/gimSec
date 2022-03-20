@@ -5,7 +5,7 @@ import (
 	"gimSec/model"
 )
 
-func Check(user *model.User) (bool, error) {
+func CheckUser(user *model.User) (bool, error) {
 	return model.CheckUser(user.Telephone)
 }
 

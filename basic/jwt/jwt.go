@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	model2 "gimSec/basic/model"
 	"gimSec/basic/utils"
 	"gimSec/model"
 	"github.com/dgrijalva/jwt-go"
@@ -17,10 +18,10 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func ReleaseToken(user model.User) (string, error) {
+func ReleaseToken(entity model2.StateFullEntity) (string, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
-		UserId: user.Id,
+		UserId: entity.Id,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			IssuedAt:  time.Now().Unix(),

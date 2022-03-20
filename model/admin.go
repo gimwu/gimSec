@@ -2,6 +2,7 @@ package model
 
 import (
 	"gimSec/basic/model"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -27,4 +28,32 @@ type Admin struct {
 
 	//lastLoginTime 最后一次登录时间
 	LastLoginTime time.Time
+}
+
+func CheckAdmin(username string) (bool, error) {
+	var admin Admin
+	err := db.Select("id").Where(Admin{Username: username}).First(&admin).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+	if len(admin.Id) > 1 {
+		return true, nil
+	}
+	return false, nil
+}
+
+func AddAdmin(admin *Admin) error {
+	err := db.Create(admin).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func AdminLogin(admin *Admin) error {
+	err := db.Where("Username = ? and Password = ?", admin.Username, admin.Password).First(&admin).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

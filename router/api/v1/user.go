@@ -15,7 +15,7 @@ func AddUser(c *gin.Context) {
 	var user *model.User
 	utils.BindJson(c, &user)
 
-	isExist, err := server.Check(user)
+	isExist, err := server.CheckUser(user)
 	if err != nil {
 		logging.Error(err)
 		c.JSON(500, gin.H{
@@ -64,7 +64,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.ReleaseToken(user)
+	token, err := jwt.ReleaseToken(user.StateFullEntity)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"code": "500",
@@ -132,7 +132,7 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.ReleaseToken(*user)
+	token, err := jwt.ReleaseToken(user.StateFullEntity)
 	if err != nil {
 		logging.Error("ReleaseToken error:", err)
 		c.JSON(500, gin.H{
