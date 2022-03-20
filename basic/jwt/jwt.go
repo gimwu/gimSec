@@ -18,7 +18,7 @@ type Claims struct {
 }
 
 func ReleaseToken(user model.User) (string, error) {
-	expirationTime := time.Now().Add(7 * 24 * time.Hour)
+	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
 		UserId: user.Id,
 		StandardClaims: jwt.StandardClaims{
@@ -52,8 +52,8 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		token, claims, err := ParseToken(tokenString)
 
-		if err != nil || token.Valid {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "权限不足"})
+		if err != nil || !token.Valid {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "token error"})
 			ctx.Abort()
 			return
 		}
