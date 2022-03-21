@@ -24,15 +24,23 @@ func InitRouter() *gin.Engine {
 	apiv1.POST("/admin/login", v1.AdminLogin)
 	apiv1.Use(jwt.AuthMiddleware())
 	{
+		apiv1.GET("/admin/queryAdminPage", v1.QueryAdminPage)
+		apiv1.GET("/admin/:id", v1.GetAdmin)
+		apiv1.PUT("/admin/:id", v1.EditAdmin)
+		apiv1.DELETE("/admin/:id", v1.DeleteAdmin)
+
+		apiv1.PUT("/user", v1.EditUser)
+		apiv1.GET("/user/:id", v1.GetUser)
+		apiv1.DELETE("/user/:id", v1.DeleteUser)
+		apiv1.GET("/user/queryUserPage", v1.QueryUserPage)
+
 		apiv1.POST("/goods", v1.AddGoods)
 		apiv1.DELETE("/goods/:id", v1.DeleteGoods)
 		apiv1.PUT("/goods/:id", v1.EditGoods)
 		apiv1.GET("/goods/:id", v1.GetGoods)
 		apiv1.GET("/queryGoodsPage", v1.QueryGoodsPage)
 
-		apiv1.PUT("/user", v1.EditUser)
-		apiv1.GET("/user/:id", v1.GetUser)
-		apiv1.GET("/user/queryUserPage", v1.QueryUserPage)
+		apiv1.POST("/order", v1.AddOrder)
 	}
 
 	return r

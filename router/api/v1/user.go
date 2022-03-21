@@ -132,19 +132,26 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.ReleaseToken(user.StateFullEntity)
+	c.JSON(200, gin.H{
+		"msg":  "200",
+		"data": user,
+	})
+}
+
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+	user, err := server.DeleteUser(id)
 	if err != nil {
-		logging.Error("ReleaseToken error:", err)
+		logging.Error("DeleteUser error :", err)
 		c.JSON(500, gin.H{
-			"msg":  500,
+			"code": 500,
 			"data": err,
 		})
 		return
 	}
 	c.JSON(200, gin.H{
-		"msg":   "200",
-		"data":  user,
-		"token": token,
+		"code": 200,
+		"data": user,
 	})
 }
 

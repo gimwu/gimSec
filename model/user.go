@@ -52,6 +52,13 @@ func EditUser(user *User) error {
 	return nil
 }
 
+func DeleteUser(user *User) (*User, error) {
+	if err := db.Delete(&user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
 func Login(user *User) error {
 	err := db.Where("Telephone = ? and Password =?", user.Telephone, user.Password).First(&user).Error
 	if err != nil {

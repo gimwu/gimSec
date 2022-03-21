@@ -50,6 +50,48 @@ func AddAdmin(admin *Admin) error {
 	return nil
 }
 
+func GetAdmin(id string) (*Admin, error) {
+	var admin Admin
+	err := db.Where("id = ?", id).First(&admin).Error
+	if err != nil {
+		return nil, err
+	}
+	return &admin, nil
+}
+
+func EditAdmin(admin *Admin) error {
+	if err := db.Updates(admin).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteAdmin(admin *Admin) (*Admin, error) {
+	if err := db.Delete(&admin).Error; err != nil {
+		return nil, err
+	}
+	return admin, nil
+}
+
+func QueryAdminPage(params interface{}, currentPage int, pageSize int) ([]*Admin, error) {
+	var adminList []*Admin
+	err := db.Model(&Admin{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&adminList).Error
+	if err != nil {
+		return nil, err
+	}
+	return adminList, nil
+}
+
+func QueryAdminCount(params interface{}) (int64, error) {
+	var count int64
+	err := db.Model(&Admin{}).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+
+}
+
 func AdminLogin(admin *Admin) error {
 	err := db.Where("Username = ? and Password = ?", admin.Username, admin.Password).First(&admin).Error
 	if err != nil {

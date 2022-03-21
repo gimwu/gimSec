@@ -22,6 +22,14 @@ func EditUser(user *model.User) error {
 	return model.EditUser(user)
 }
 
+func DeleteUser(id string) (*model.User, error) {
+	user, err := model.GetUser(id)
+	if err != nil {
+		return nil, err
+	}
+	return model.DeleteUser(user)
+}
+
 func Login(user *model.User) error {
 	return model.Login(user)
 }
