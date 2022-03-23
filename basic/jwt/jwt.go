@@ -1,9 +1,10 @@
 package jwt
 
 import (
+	"gimSec/basic/logging"
 	model2 "gimSec/basic/model"
-	"gimSec/basic/utils"
-	"gimSec/model"
+	"gimSec/basic/response"
+	"gimSec/server"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -60,9 +61,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		userId := claims.UserId
-		db := utils.GormMysqlDatabase
-		var user model.User
-		db.First(&user, userId)
+		user, err := server.GetUser(userId)
+		if err != nil {
+			logging.Error(err)
+			response.Error(ctx, err)
+		}
 
 		if user.Id == "" {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "权限不足"})
