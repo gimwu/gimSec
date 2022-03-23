@@ -3,6 +3,7 @@ package v1
 import (
 	"gimSec/basic/jwt"
 	"gimSec/basic/logging"
+	"gimSec/basic/response"
 	"gimSec/basic/utils"
 	"gimSec/model"
 	"gimSec/server"
@@ -17,36 +18,24 @@ func AddAdmin(c *gin.Context) {
 	isExist, err := server.CheckAdmin(admin)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
 	if isExist {
 		logging.Info("register Telephone is exist")
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": "register Telephone is exit",
-		})
+		response.Error(c, "register Telephone is exit")
 		return
 	}
 
 	err = server.AddAdmin(admin)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": admin,
-	})
+	response.Success(c, admin, nil)
 }
 
 func AdminLogin(c *gin.Context) {
@@ -55,21 +44,13 @@ func AdminLogin(c *gin.Context) {
 
 	err := server.AdminLogin(&admin)
 	if err != nil {
-		c.JSON(500, gin.H{
-			"code": "500",
-			"data": err,
-			"msg":  "login fail ",
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
 	token, err := jwt.ReleaseToken(admin.StateFullEntity)
 	if err != nil {
-		c.JSON(500, gin.H{
-			"code": "500",
-			"data": err,
-			"msg":  "login fail ",
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
@@ -81,6 +62,7 @@ func AdminLogin(c *gin.Context) {
 		"msg":           "Login success",
 		"Authorization": token,
 	})
+	response.Success(c, admin, nil)
 }
 
 func QueryAdminPage(c *gin.Context) {
@@ -91,16 +73,10 @@ func QueryAdminPage(c *gin.Context) {
 	data, err := server.QueryAdminPage(&json, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryAdminPage Error:", err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": data,
-	})
+	response.Success(c, data)
 }
 
 func GetAdmin(c *gin.Context) {
@@ -110,17 +86,11 @@ func GetAdmin(c *gin.Context) {
 
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": admin,
-	})
+	response.Success(c, admin)
 
 }
 
@@ -130,10 +100,7 @@ func EditAdmin(c *gin.Context) {
 	admin, err := server.GetAdmin(id)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
@@ -142,17 +109,11 @@ func EditAdmin(c *gin.Context) {
 	err = server.EditAdmin(admin)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": admin,
-	})
+	response.Success(c, admin)
 }
 
 func DeleteAdmin(c *gin.Context) {
@@ -160,14 +121,8 @@ func DeleteAdmin(c *gin.Context) {
 	admin, err := server.DeleteAdmin(id)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 	}
 
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": admin,
-	})
+	response.Success(c, admin, nil)
 }

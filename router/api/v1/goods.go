@@ -2,6 +2,7 @@ package v1
 
 import (
 	"gimSec/basic/logging"
+	"gimSec/basic/response"
 	"gimSec/basic/utils"
 	"gimSec/model"
 	"gimSec/server"
@@ -15,29 +16,20 @@ func AddGoods(c *gin.Context) {
 	err := server.AddGoods(&json)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": "500",
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
-	c.JSON(200, gin.H{
-		"code": "200",
-		"data": &json,
-		"msg":  "AddGoods Success",
-	})
+	response.Success(c, json, "success Delete")
 }
 
 func DeleteGoods(c *gin.Context) {
 	id := c.Param("id")
 	err := server.DeleteGoods(id)
 	if err != nil {
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
-
+		response.Error(c, err.Error())
+		return
 	}
+	response.Success(c, nil, "success Delete")
 }
 
 func EditGoods(c *gin.Context) {
@@ -47,10 +39,7 @@ func EditGoods(c *gin.Context) {
 	goods, err := server.GetGoods(id)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(200, gin.H{
-			"msg":  "500",
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
@@ -59,18 +48,11 @@ func EditGoods(c *gin.Context) {
 	err = server.EditGoods(goods)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(500, gin.H{
-			"code": "500",
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"code": "200",
-		"data": goods,
-		"msg":  "success",
-	})
+	response.Success(c, goods, nil)
 }
 
 //GetGoods select by id
@@ -81,16 +63,10 @@ func GetGoods(c *gin.Context) {
 	goods, err := server.GetGoods(id)
 	if err != nil {
 		logging.Error(err)
-		c.JSON(200, gin.H{
-			"msg":  "500",
-			"data": err,
-		})
+		response.Error(c, err.Error())
 		return
 	}
-	c.JSON(200, gin.H{
-		"msg":  "200",
-		"data": goods,
-	})
+	response.Success(c, goods, nil)
 
 }
 
@@ -103,13 +79,7 @@ func QueryGoodsPage(c *gin.Context) {
 	data, err := server.QueryGoodsPage(&json, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryGoodsPage Error:", err)
-		c.JSON(500, gin.H{
-			"code": 500,
-			"data": err,
-		})
+		response.Error(c, err.Error())
 	}
-	c.JSON(200, gin.H{
-		"code": 200,
-		"data": data,
-	})
+	response.Success(c, data, nil)
 }
