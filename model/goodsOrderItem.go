@@ -15,6 +15,7 @@ const (
 	REVEIVE                              //签收
 	REFUND                               //退货
 	SUCCESS                              //完成订单
+	FAIL                                 //订单失败(未付款自动取消，人为取消)
 )
 
 //GoodsOrderItem 订单项目表
