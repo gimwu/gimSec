@@ -20,7 +20,7 @@ type Goods struct {
 	Price decimal.Decimal
 
 	//stock 商品库存
-	Stock uint64
+	Stock int64
 
 	//photo 商品图片
 	Photo string `gorm:"type:varchar(255);not null"`

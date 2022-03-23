@@ -8,10 +8,10 @@ import (
 
 type User struct {
 	model.StateFullEntity
-	Name          string `gorm:"type:varchar(255);not null"`
-	Telephone     string `gorm:"type:varchar(255);not null;unique"`
-	Password      string `gorm:"type:varchar(255);not null"`
-	LastTimeLogin time.Time
+	Name          string    `gorm:"type:varchar(255);not null" json:"Name"`
+	Telephone     string    `gorm:"type:varchar(255);not null;unique" json:"Telephone"`
+	Password      string    `gorm:"type:varchar(255);not null" json:"Password"`
+	LastTimeLogin time.Time `json:"LastTimeLogin"`
 }
 
 func CheckUser(telephone string) (bool, error) {

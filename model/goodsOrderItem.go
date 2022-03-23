@@ -30,10 +30,18 @@ type GoodsOrderItem struct {
 	UsernameId string `gorm:"type:varchar(255);not null"`
 
 	//goodsNum 购买商品数量
-	GoodsNum uint
+	GoodsNum int64
 
 	//price 总共价格
 	Price decimal.Decimal
 
 	OrderStatus OrderStatusEnum
+}
+
+func AddGoodsOrderItem(goodsOrderItem *GoodsOrderItem) error {
+	err := db.Create(goodsOrderItem).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -14,6 +14,7 @@ func AddGoodsOrderItem(c *gin.Context) {
 	utils.BindJson(c, &json)
 
 	goodsId := json["goodsId"].(string)
+	goodsNum := int64(json["goodsNum"].(float64))
 	goods, err := server.GetGoods(goodsId)
 	if err != nil {
 		logging.Error(err)
@@ -22,7 +23,12 @@ func AddGoodsOrderItem(c *gin.Context) {
 	}
 	logging.Info(goods)
 	get, _ := c.Get("user")
-	user := get.(model.User)
-	server.AddGoodsOrderItem(goods, &user)
-	logging.Debug(user.Id, "       ", user.Name)
+	user := get.(*model.User)
+	goodsOrderItem, err := server.AddGoodsOrderItem(goods, goodsNum, user)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	response.Success(c, goodsOrderItem)
 }
