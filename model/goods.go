@@ -79,3 +79,15 @@ func QueryGoodsCount(params interface{}) (int64, error) {
 	}
 	return count, nil
 }
+
+func CheckGoodsStock(goods *Goods) (bool, error) {
+	var stock int
+	err := db.Model(goods).Select("stock").Where("id = ?", goods.Id).First(&stock).Error
+	if err != nil {
+		return false, err
+	}
+	if stock > 0 {
+		return true, nil
+	}
+	return false, nil
+}

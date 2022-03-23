@@ -58,7 +58,7 @@ func Login(c *gin.Context) {
 
 	c.Header("Authorization", token)
 
-	response.Success(c, user)
+	response.Success(c, user, token)
 }
 
 func EditUser(c *gin.Context) {
