@@ -5,6 +5,18 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type OrderStatusEnum int
+
+const (
+	DELETE        OrderStatusEnum = iota //删除
+	ORDER_NOT_PAY                        //下单未付款
+	ORDER_PAY                            //下单已付款
+	SHIPED                               //发货
+	REVEIVE                              //签收
+	REFUND                               //退货
+	SUCCESS                              //完成订单
+)
+
 //GoodsOrderItem 订单项目表
 type GoodsOrderItem struct {
 	//继承父类
@@ -21,4 +33,6 @@ type GoodsOrderItem struct {
 
 	//price 总共价格
 	Price decimal.Decimal
+
+	OrderStatus OrderStatusEnum
 }

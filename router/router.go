@@ -40,7 +40,7 @@ func InitRouter() *gin.Engine {
 		apiv1.GET("/goods/:id", v1.GetGoods)
 		apiv1.GET("/queryGoodsPage", v1.QueryGoodsPage)
 
-		apiv1.POST("/order", v1.AddOrder)
+		apiv1.POST("/goodsOrderItem", v1.AddGoodsOrderItem)
 	}
 
 	return r
