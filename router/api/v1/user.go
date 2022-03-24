@@ -62,7 +62,7 @@ func Login(c *gin.Context) {
 }
 
 func EditUser(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	logging.Debug(id)
 
 	user, err := server.GetUser(id)
@@ -86,7 +86,7 @@ func EditUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	logging.Debug(id)
 
 	user, err := server.GetUser(id)
@@ -100,7 +100,7 @@ func GetUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	user, err := server.DeleteUser(id)
 	if err != nil {
 		logging.Error("DeleteUser error :", err)

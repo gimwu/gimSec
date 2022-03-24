@@ -23,7 +23,7 @@ func AddGoods(c *gin.Context) {
 }
 
 func DeleteGoods(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	err := server.DeleteGoods(id)
 	if err != nil {
 		response.Error(c, err.Error())
@@ -33,7 +33,7 @@ func DeleteGoods(c *gin.Context) {
 }
 
 func EditGoods(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	logging.Debug(id)
 
 	goods, err := server.GetGoods(id)
@@ -57,7 +57,7 @@ func EditGoods(c *gin.Context) {
 
 //GetGoods select by id
 func GetGoods(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	logging.Debug(id)
 
 	goods, err := server.GetGoods(id)
@@ -80,6 +80,7 @@ func QueryGoodsPage(c *gin.Context) {
 	if err != nil {
 		logging.Error("QueryGoodsPage Error:", err)
 		response.Error(c, err.Error())
+		return
 	}
 	response.Success(c, data, nil)
 }

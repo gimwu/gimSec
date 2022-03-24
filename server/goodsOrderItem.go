@@ -38,3 +38,30 @@ func AddGoodsOrderItem(goods *model.Goods, goodsNum int64, user *model.User) (*m
 	}
 	return &goodsOrderItem, nil
 }
+
+func DeleteGoodsOrderItem(id string) (*model.GoodsOrderItem, error) {
+	goodsOrderItem, err := model.GetGoodsOrderItem(id)
+	if err != nil {
+		return nil, err
+	}
+	return model.DeleteGoodsOrderItem(goodsOrderItem)
+}
+
+func GetGoodsOrderItem(id string) (*model.GoodsOrderItem, error) {
+	return model.GetGoodsOrderItem(id)
+}
+
+func QueryGoodsOrderItemPage(params interface{}, currentPage int, pageSize int) (map[string]interface{}, error) {
+	goodsOrderItemList, err := model.QueryGoodsOrderItemPage(params, currentPage, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	count, err := model.QueryGoodsOrderItemCount(params)
+	if err != nil {
+		return nil, err
+	}
+	res := make(map[string]interface{})
+	res["list"] = &goodsOrderItemList
+	res["count"] = count
+	return res, nil
+}

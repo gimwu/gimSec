@@ -16,3 +16,11 @@ type Order struct {
 	//所属用户id
 	BelongUserId string `gorm:"type:varchar(255);not null"`
 }
+
+func AddOrder(order *Order) error {
+	err := db.Create(order).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

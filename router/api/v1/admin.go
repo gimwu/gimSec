@@ -80,7 +80,7 @@ func QueryAdminPage(c *gin.Context) {
 }
 
 func GetAdmin(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 
 	admin, err := server.GetAdmin(id)
 
@@ -95,7 +95,7 @@ func GetAdmin(c *gin.Context) {
 }
 
 func EditAdmin(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 
 	admin, err := server.GetAdmin(id)
 	if err != nil {
@@ -117,7 +117,7 @@ func EditAdmin(c *gin.Context) {
 }
 
 func DeleteAdmin(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Query("id")
 	admin, err := server.DeleteAdmin(id)
 	if err != nil {
 		logging.Error(err)
