@@ -20,7 +20,7 @@ type Claims struct {
 }
 
 func ReleaseToken(entity model2.StateFullEntity) (string, error) {
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &Claims{
 		UserId: entity.Id,
 		StandardClaims: jwt.StandardClaims{
