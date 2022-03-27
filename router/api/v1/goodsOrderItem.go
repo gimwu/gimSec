@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+//AddGoodsOrderItem  add to shopping cart
 func AddGoodsOrderItem(c *gin.Context) {
 	json := make(map[string]interface{})
 	utils.BindJson(c, &json)

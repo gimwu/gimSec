@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//Addorder shoppping to order
 func AddOrder(c *gin.Context) {
 	var goodsOrderItems *[]string
 	c.ShouldBind(&goodsOrderItems)
