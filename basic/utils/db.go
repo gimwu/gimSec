@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"gimSec/basic/logging"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -10,14 +9,6 @@ import (
 var (
 	GormMysqlDatabase *gorm.DB
 )
-
-func init() {
-	var err error
-	GormMysqlDatabase, err = GormMysqlConnection("localhost", 3306, "root", "Gbdv470365234", "gimmick")
-	if err != nil {
-		logging.Error(err)
-	}
-}
 
 func GormMysqlConnection(hostname string, port int, username string, password string, dbname string) (*gorm.DB, error) {
 	var err error

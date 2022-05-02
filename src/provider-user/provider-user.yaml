@@ -1,0 +1,9 @@
+dubbo:
+  registries:
+    zookeeper: # 指定 zookeeper 注册中心
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+  protocols:
+    triple:
+      name: tri
+      port: 20000
