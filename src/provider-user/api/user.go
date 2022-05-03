@@ -112,12 +112,10 @@ func DeleteUser(c *gin.Context) {
 }
 
 func QueryUserPage(c *gin.Context) {
-	json := make(map[string]interface{})
-	utils.BindJson(c, &json)
 	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	logging.Debug(currentPage, pageSize)
-	data, err := server.QueryUserPage(&json, currentPage, pageSize)
+	data, err := server.QueryUserPage(nil, currentPage, pageSize)
 
 	if err != nil {
 		logging.Error("QueryUserPage Error:", err)

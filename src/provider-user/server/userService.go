@@ -4,7 +4,7 @@ import (
 	"context"
 	"gimSec/api"
 	"gimSec/basic/logging"
-	"gimSec/model"
+	"gimSec/src/provider-user/model"
 )
 
 type UserProvider struct {

@@ -7,3 +7,7 @@ dubbo:
     triple:
       name: tri
       port: 20000
+  provider:
+    services:
+      UserProvider:
+        interface: ""
