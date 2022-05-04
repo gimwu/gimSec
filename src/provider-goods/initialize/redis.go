@@ -6,7 +6,7 @@ import (
 )
 
 func Redis() {
-	global.USER_REDIS = redis.NewClient(&redis.Options{
+	global.GOODS_REDIS = redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
 		DB:       0,  // use default USER_DB

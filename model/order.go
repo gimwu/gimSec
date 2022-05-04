@@ -13,6 +13,9 @@ type Order struct {
 	//price 订单总价
 	Price decimal.Decimal
 
+	//OrderStatus 订单状态 1待付款 2待发货 3待收获 4已完成
+	OrderStatus int `gorm:"type:int;not null"`
+
 	//所属用户id
 	BelongUserId string `gorm:"type:varchar(255);not null"`
 }

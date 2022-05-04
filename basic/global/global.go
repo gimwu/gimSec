@@ -6,6 +6,8 @@ import (
 )
 
 var (
-	REDIS *redis.Client
-	DB    *gorm.DB
+	USER_REDIS  *redis.Client
+	GOODS_REDIS *redis.Client
+	USER_DB     *gorm.DB
+	GOODS_DB    *gorm.DB
 )
