@@ -1,13 +1,16 @@
 package v1
 
 import (
-	"gimSec/basic/jwt"
+	"context"
+	"gimSec/basic/global"
 	"gimSec/basic/logging"
 	"gimSec/basic/response"
 	"gimSec/basic/utils"
+	"gimSec/src/provider-user/jwt"
 	"gimSec/src/provider-user/model"
 	"gimSec/src/provider-user/server"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"strconv"
 	"time"
 )
@@ -56,6 +59,13 @@ func Login(c *gin.Context) {
 		response.Error(c, err.Error())
 		return
 	}
+
+	result, err := global.REDIS.Set(context.Background(), user.Id, token, redis.KeepTTL).Result()
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+	logging.Debug(result, "Success")
 
 	c.Header("Authorization", token)
 
@@ -120,6 +130,21 @@ func QueryUserPage(c *gin.Context) {
 	if err != nil {
 		logging.Error("QueryUserPage Error:", err)
 		response.Error(c, err.Error())
+		return
 	}
 	response.Success(c, data)
+}
+
+func Logout(c *gin.Context) {
+	id, _ := c.GetPostForm("id")
+	result, err := global.REDIS.Del(context.Background(), id).Result()
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+	if result != 1 {
+		response.Error(c, "退出失败")
+		return
+	}
+	response.Success(c, result, "退出成功")
 }

@@ -1,10 +1,13 @@
 package model
 
 import (
+	"gimSec/basic/global"
 	"gimSec/basic/model"
 	"gorm.io/gorm"
 	"time"
 )
+
+var db = global.ORDER_DB
 
 //Admin 管理员表
 type Admin struct {

@@ -1,15 +1,14 @@
 package jwt
 
 import (
+	"context"
+	"gimSec/basic/global"
 	"gimSec/basic/logging"
-	model2 "gimSec/basic/model"
 	"gimSec/basic/response"
-	"gimSec/server"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
-	"time"
 )
 
 var jwtKey = []byte("a_secret_crect")
@@ -17,27 +16,6 @@ var jwtKey = []byte("a_secret_crect")
 type Claims struct {
 	UserId string
 	jwt.StandardClaims
-}
-
-func ReleaseToken(entity model2.StateFullEntity) (string, error) {
-	expirationTime := time.Now().Add(1 * time.Hour)
-	claims := &Claims{
-		UserId: entity.Id,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-			IssuedAt:  time.Now().Unix(),
-			Issuer:    "oceanlearn.tech",
-			Subject:   "user token",
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
 }
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -61,19 +39,20 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		userId := claims.UserId
-		user, err := server.GetUser(userId)
+		//TODO: 切换成Redis
+		result, err := global.REDIS.Get(context.Background(), userId).Result()
 		if err != nil {
 			logging.Error(err)
-			response.Error(ctx, err)
+			response.Error(ctx, err.Error())
+			return
 		}
 
-		if user.Id == "" {
+		if tokenString != result {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "权限不足"})
 			ctx.Abort()
 			return
 		}
 
-		ctx.Set("user", user)
 		ctx.Next()
 	}
 }

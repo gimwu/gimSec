@@ -8,7 +8,7 @@ import (
 
 func Gorm() {
 	var err error
-	global.USER_DB, err = utils.GormMysqlConnection("124.221.132.236", 3306, "gimmick", "Gbdv470365234,.", "gimmick")
+	global.DB, err = utils.GormMysqlConnection("124.221.132.236", 3306, "gimmick", "Gbdv470365234,.", "gimmick")
 	if err != nil {
 		logging.Error(err)
 	}

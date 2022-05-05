@@ -6,5 +6,5 @@ dubbo:
       address: 127.0.0.1:2181
   consumer:
     references:
-      UserServiceClientImpl:
+      SecGoodsServerClientImpl:
         protocol: tri

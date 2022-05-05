@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-var db = global.USER_DB
-
 type User struct {
 	model.StateFullEntity
 	Name          string    `gorm:"type:varchar(255);not null" json:"name"`
@@ -20,7 +18,7 @@ type User struct {
 
 func CheckUser(telephone string) (bool, error) {
 	var user User
-	err := global.USER_DB.Select("id").Where(User{Telephone: telephone}).First(&user).Error
+	err := global.DB.Select("id").Where(User{Telephone: telephone}).First(&user).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
@@ -32,7 +30,7 @@ func CheckUser(telephone string) (bool, error) {
 }
 
 func AddUser(user *User) error {
-	err := global.USER_DB.Create(&user).Error
+	err := global.DB.Create(&user).Error
 	if err != nil {
 		return err
 	}
@@ -41,7 +39,7 @@ func AddUser(user *User) error {
 
 func GetUser(id string) (*User, error) {
 	var user User
-	err := global.USER_DB.Where("id = ?", id).First(&user).Error
+	err := global.DB.Where("id = ?", id).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +47,7 @@ func GetUser(id string) (*User, error) {
 }
 
 func EditUser(user *User) error {
-	err := global.USER_DB.Updates(user).Error
+	err := global.DB.Updates(user).Error
 	if err != nil {
 		return err
 	}
@@ -57,14 +55,14 @@ func EditUser(user *User) error {
 }
 
 func DeleteUser(user *User) (*User, error) {
-	if err := global.USER_DB.Delete(&user).Error; err != nil {
+	if err := global.DB.Delete(&user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
 func Login(user *User) error {
-	err := global.USER_DB.Where("Telephone = ? and Password =?", user.Telephone, user.Password).First(&user).Error
+	err := global.DB.Where("Telephone = ? and Password =?", user.Telephone, user.Password).First(&user).Error
 	if err != nil {
 		return err
 	}
@@ -73,7 +71,7 @@ func Login(user *User) error {
 
 func QueryUserPage(params interface{}, currentPage int, pageSize int) ([]*User, error) {
 	var UserList []*User
-	err := global.USER_DB.Model(&User{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&UserList).Error
+	err := global.DB.Model(&User{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&UserList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +80,7 @@ func QueryUserPage(params interface{}, currentPage int, pageSize int) ([]*User, 
 
 func QueryUserCount(params interface{}) (int64, error) {
 	var count int64
-	err := global.USER_DB.Model(&User{}).Count(&count).Error
+	err := global.DB.Model(&User{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}
