@@ -26,7 +26,7 @@ import (
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc_go.SupportPackageIsVersion7
 
-// UserServiceClient is the client API for UserService server.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
@@ -94,7 +94,7 @@ func (x *userServiceGetUserPageClient) Recv() (*User, error) {
 	return m, nil
 }
 
-// UserServiceServer is the server API for UserService server.
+// UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
@@ -131,7 +131,7 @@ func (s *UnimplementedUserServiceServer) XXX_InterfaceName() string {
 
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
-// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this server.
+// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to UserServiceServer will
 // result in compilation errors.
 type UnsafeUserServiceServer interface {
@@ -205,7 +205,7 @@ func (x *userServiceGetUserPageServer) Send(m *User) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-// UserService_ServiceDesc is the grpc_go.ServiceDesc for UserService server.
+// UserService_ServiceDesc is the grpc_go.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc_go.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc_go.ServiceDesc{

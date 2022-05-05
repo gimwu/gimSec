@@ -1,0 +1,23 @@
+syntax = "proto3";
+package api;
+
+option go_package = "./;api";
+
+service GoodsService{
+  rpc GetGoodsById(GoodsId) returns (Goods);
+}
+
+message Goods{
+  string id = 1;
+  string name = 2;
+  string price = 3;
+  int64 stock = 4;
+  string photo = 5;
+  string content = 6;
+  string belongUserId = 7;
+}
+
+message GoodsId{
+  string id =1;
+}
+
