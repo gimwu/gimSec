@@ -1,7 +1,6 @@
 package router
 
 import (
-	"gimSec/basic/jwt"
 	"gimSec/basic/utils"
 	v1 "gimSec/src/consumer-sec-order/api"
 	"github.com/gin-gonic/gin"
@@ -13,7 +12,6 @@ func InitRouter() *gin.Engine {
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(utils.Cors())
 
-	apiv1.Use(jwt.AuthMiddleware())
 	{
 		apiv1.POST("/secOrder", v1.AddSecOrder)
 	}
