@@ -66,3 +66,21 @@ func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {
 	}
 	return order, nil
 }
+
+func QueryOrderPage(params interface{}, currentPage int, pageSize int) ([]*Order, error) {
+	var orderList []*Order
+	err := global.DB.Model(&Order{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&orderList).Error
+	if err != nil {
+		return nil, err
+	}
+	return orderList, nil
+}
+
+func QueryOrderCount(params interface{}) (int64, error) {
+	var count int64
+	err := global.DB.Model(&Order{}).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

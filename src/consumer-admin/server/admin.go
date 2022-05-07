@@ -2,7 +2,8 @@ package server
 
 import (
 	"gimSec/basic/utils"
-	"gimSec/model"
+	"gimSec/src/consumer-admin/model"
+	"time"
 )
 
 func CheckAdmin(admin *model.Admin) (bool, error) {
@@ -11,6 +12,7 @@ func CheckAdmin(admin *model.Admin) (bool, error) {
 
 func AddAdmin(admin *model.Admin) error {
 	admin.Id = utils.SnowFlake.NextVal()
+	admin.LastLoginTime = time.Now()
 	return model.AddAdmin(admin)
 }
 

@@ -1,6 +1,6 @@
 package main
 
-import "gimSec/src/consumer-order/initialize"
+import "gimSec/src/consumer-admin/initialize"
 
 func main() {
 	initialize.Dubbo()

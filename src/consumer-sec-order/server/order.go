@@ -23,3 +23,18 @@ func AddSecOrderByMq(delivery amqp.Delivery) {
 	err = model.AddSecOrder(&order)
 	return
 }
+
+func QuerySecOrderPage(params interface{}, currentPage int, pageSize int) (map[string]interface{}, error) {
+	secOrderList, err := model.QuerySecOrderPage(params, currentPage, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	count, err := model.QuerySecOrderCount(params)
+	if err != nil {
+		return nil, err
+	}
+	res := make(map[string]interface{})
+	res["list"] = &secOrderList
+	res["count"] = count
+	return res, nil
+}

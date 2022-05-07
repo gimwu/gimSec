@@ -29,3 +29,21 @@ func AddSecOrder(order *SecOrder) error {
 	}
 	return nil
 }
+
+func QuerySecOrderPage(params interface{}, currentPage int, pageSize int) ([]*SecOrder, error) {
+	var secOrderList []*SecOrder
+	err := global.DB.Model(&SecOrder{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&secOrderList).Error
+	if err != nil {
+		return nil, err
+	}
+	return secOrderList, nil
+}
+
+func QuerySecOrderCount(params interface{}) (int64, error) {
+	var count int64
+	err := global.DB.Model(&SecOrder{}).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

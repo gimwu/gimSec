@@ -7,6 +7,7 @@ import (
 	"gimSec/basic/utils"
 	"gimSec/src/consumer-order/server"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func AddOrder(c *gin.Context) {
@@ -40,5 +41,18 @@ func AddOrder(c *gin.Context) {
 	}
 
 	response.Success(c, order, "下单成功")
+}
 
+func QueryOrderPage(c *gin.Context) {
+	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	logging.Debug(currentPage, pageSize)
+	data, err := server.QueryOrderPage(nil, currentPage, pageSize)
+
+	if err != nil {
+		logging.Error("QueryUserPage Error:", err)
+		response.Error(c, err.Error())
+		return
+	}
+	response.Success(c, data)
 }

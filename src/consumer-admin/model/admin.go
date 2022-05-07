@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-var db = global.ORDER_DB
-
 //Admin 管理员表
 type Admin struct {
 	//继承父类
@@ -35,7 +33,7 @@ type Admin struct {
 
 func CheckAdmin(username string) (bool, error) {
 	var admin Admin
-	err := db.Select("id").Where(Admin{Username: username}).First(&admin).Error
+	err := global.DB.Select("id").Where(Admin{Username: username}).First(&admin).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
@@ -46,7 +44,7 @@ func CheckAdmin(username string) (bool, error) {
 }
 
 func AddAdmin(admin *Admin) error {
-	err := db.Create(admin).Error
+	err := global.DB.Create(admin).Error
 	if err != nil {
 		return err
 	}
@@ -55,7 +53,7 @@ func AddAdmin(admin *Admin) error {
 
 func GetAdmin(id string) (*Admin, error) {
 	var admin Admin
-	err := db.Where("id = ?", id).First(&admin).Error
+	err := global.DB.Where("id = ?", id).First(&admin).Error
 	if err != nil {
 		return nil, err
 	}
@@ -63,14 +61,14 @@ func GetAdmin(id string) (*Admin, error) {
 }
 
 func EditAdmin(admin *Admin) error {
-	if err := db.Updates(admin).Error; err != nil {
+	if err := global.DB.Updates(admin).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func DeleteAdmin(admin *Admin) (*Admin, error) {
-	if err := db.Delete(&admin).Error; err != nil {
+	if err := global.DB.Delete(&admin).Error; err != nil {
 		return nil, err
 	}
 	return admin, nil
@@ -78,7 +76,7 @@ func DeleteAdmin(admin *Admin) (*Admin, error) {
 
 func QueryAdminPage(params interface{}, currentPage int, pageSize int) ([]*Admin, error) {
 	var adminList []*Admin
-	err := db.Model(&Admin{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&adminList).Error
+	err := global.DB.Model(&Admin{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&adminList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +85,7 @@ func QueryAdminPage(params interface{}, currentPage int, pageSize int) ([]*Admin
 
 func QueryAdminCount(params interface{}) (int64, error) {
 	var count int64
-	err := db.Model(&Admin{}).Count(&count).Error
+	err := global.DB.Model(&Admin{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}
@@ -96,7 +94,7 @@ func QueryAdminCount(params interface{}) (int64, error) {
 }
 
 func AdminLogin(admin *Admin) error {
-	err := db.Where("Username = ? and Password = ?", admin.Username, admin.Password).First(&admin).Error
+	err := global.DB.Where("Username = ? and Password = ?", admin.Username, admin.Password).First(&admin).Error
 	if err != nil {
 		return err
 	}

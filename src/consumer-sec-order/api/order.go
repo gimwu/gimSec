@@ -116,3 +116,17 @@ func AddSecOrder(c *gin.Context) {
 	global.REDIS.Del(context.Background(), goodsIDAndUserId)
 	response.Success(c, "200", "秒杀成功")
 }
+
+func QuerySecOrderPage(c *gin.Context) {
+	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	logging.Debug(currentPage, pageSize)
+	data, err := server.QuerySecOrderPage(nil, currentPage, pageSize)
+
+	if err != nil {
+		logging.Error("QueryUserPage Error:", err)
+		response.Error(c, err.Error())
+		return
+	}
+	response.Success(c, data)
+}
