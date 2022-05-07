@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"gimSec/basic/logging"
-	router2 "gimSec/src/provider-goods/router"
+	router2 "gimSec/src/consumer-order/router"
 	"net/http"
 )
 
@@ -11,7 +11,7 @@ func Router() {
 	router := router2.InitRouter()
 	logging.Info("Server Init")
 	server := &http.Server{
-		Addr:    ":8083",
+		Addr:    ":8070",
 		Handler: router,
 	}
 

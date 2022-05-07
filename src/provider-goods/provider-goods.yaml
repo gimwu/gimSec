@@ -6,7 +6,7 @@ dubbo:
   protocols:
     triple:
       name: tri
-      port: 20001
+      port: 20002
   provider:
     services:
       GoodsProvider:

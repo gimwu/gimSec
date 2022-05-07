@@ -29,6 +29,7 @@ const _ = grpc_go.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GoodsServiceClient interface {
 	GetGoodsById(ctx context.Context, in *GoodsId, opts ...grpc_go.CallOption) (*Goods, common.ErrorWithAttachment)
+	GetGoodsByIds(ctx context.Context, in *GoodsIds, opts ...grpc_go.CallOption) (*Goodss, common.ErrorWithAttachment)
 }
 
 type goodsServiceClient struct {
@@ -36,7 +37,8 @@ type goodsServiceClient struct {
 }
 
 type GoodsServiceClientImpl struct {
-	GetGoodsById func(ctx context.Context, in *GoodsId) (*Goods, error)
+	GetGoodsById  func(ctx context.Context, in *GoodsId) (*Goods, error)
+	GetGoodsByIds func(ctx context.Context, in *GoodsIds) (*Goodss, error)
 }
 
 func (c *GoodsServiceClientImpl) GetDubboStub(cc *triple.TripleConn) GoodsServiceClient {
@@ -57,11 +59,18 @@ func (c *goodsServiceClient) GetGoodsById(ctx context.Context, in *GoodsId, opts
 	return out, c.cc.Invoke(ctx, "/"+interfaceKey+"/GetGoodsById", in, out)
 }
 
+func (c *goodsServiceClient) GetGoodsByIds(ctx context.Context, in *GoodsIds, opts ...grpc_go.CallOption) (*Goodss, common.ErrorWithAttachment) {
+	out := new(Goodss)
+	interfaceKey := ctx.Value(constant.InterfaceKey).(string)
+	return out, c.cc.Invoke(ctx, "/"+interfaceKey+"/GetGoodsByIds", in, out)
+}
+
 // GoodsServiceServer is the server API for GoodsService service.
 // All implementations must embed UnimplementedGoodsServiceServer
 // for forward compatibility
 type GoodsServiceServer interface {
 	GetGoodsById(context.Context, *GoodsId) (*Goods, error)
+	GetGoodsByIds(context.Context, *GoodsIds) (*Goodss, error)
 	mustEmbedUnimplementedGoodsServiceServer()
 }
 
@@ -72,6 +81,9 @@ type UnimplementedGoodsServiceServer struct {
 
 func (UnimplementedGoodsServiceServer) GetGoodsById(context.Context, *GoodsId) (*Goods, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGoodsById not implemented")
+}
+func (UnimplementedGoodsServiceServer) GetGoodsByIds(context.Context, *GoodsIds) (*Goodss, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGoodsByIds not implemented")
 }
 func (s *UnimplementedGoodsServiceServer) XXX_SetProxyImpl(impl protocol.Invoker) {
 	s.proxyImpl = impl
@@ -130,6 +142,35 @@ func _GoodsService_GetGoodsById_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GoodsService_GetGoodsByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc_go.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GoodsIds)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	base := srv.(dubbo3.Dubbo3GrpcService)
+	args := []interface{}{}
+	args = append(args, in)
+	md, _ := metadata.FromIncomingContext(ctx)
+	invAttachment := make(map[string]interface{}, len(md))
+	for k, v := range md {
+		invAttachment[k] = v
+	}
+	invo := invocation.NewRPCInvocation("GetGoodsByIds", args, invAttachment)
+	if interceptor == nil {
+		result := base.XXX_GetProxyImpl().Invoke(ctx, invo)
+		return result, result.Error()
+	}
+	info := &grpc_go.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ctx.Value("XXX_TRIPLE_GO_INTERFACE_NAME").(string),
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		result := base.XXX_GetProxyImpl().Invoke(ctx, invo)
+		return result, result.Error()
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GoodsService_ServiceDesc is the grpc_go.ServiceDesc for GoodsService service.
 // It's only intended for direct use with grpc_go.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -140,6 +181,10 @@ var GoodsService_ServiceDesc = grpc_go.ServiceDesc{
 		{
 			MethodName: "GetGoodsById",
 			Handler:    _GoodsService_GetGoodsById_Handler,
+		},
+		{
+			MethodName: "GetGoodsByIds",
+			Handler:    _GoodsService_GetGoodsByIds_Handler,
 		},
 	},
 	Streams:  []grpc_go.StreamDesc{},

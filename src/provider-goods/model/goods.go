@@ -32,29 +32,38 @@ type Goods struct {
 
 func GetGoods(id string) (*Goods, error) {
 	var goods Goods
-	err := global.GOODS_DB.Where("id = ?", id).First(&goods).Error
+	err := global.DB.Where("id = ?", id).First(&goods).Error
 	if err != nil {
 		return nil, err
 	}
 	return &goods, nil
 }
 
+func GetGoodsByIds(ids []string) ([]Goods, error) {
+	goodsList := make([]Goods, 0)
+	err := global.DB.Where("id in ?", ids).Find(&goodsList).Error
+	if err != nil {
+		return nil, err
+	}
+	return goodsList, nil
+}
+
 func AddGoods(goods *Goods) error {
-	if err := global.GOODS_DB.Create(&goods).Error; err != nil {
+	if err := global.DB.Create(&goods).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func EditGoods(goods *Goods) error {
-	if err := global.GOODS_DB.Updates(goods).Error; err != nil {
+	if err := global.DB.Updates(goods).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func DeleteGoods(goods *Goods) error {
-	if err := global.GOODS_DB.Delete(&goods).Error; err != nil {
+	if err := global.DB.Delete(&goods).Error; err != nil {
 		return err
 	}
 	return nil
@@ -62,7 +71,7 @@ func DeleteGoods(goods *Goods) error {
 
 func QueryGoodsPage(params interface{}, currentPage int, pageSize int) ([]*Goods, error) {
 	var GoodsList []*Goods
-	err := global.GOODS_DB.Model(&Goods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
+	err := global.DB.Model(&Goods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +80,7 @@ func QueryGoodsPage(params interface{}, currentPage int, pageSize int) ([]*Goods
 
 func QueryGoodsCount(params interface{}) (int64, error) {
 	var count int64
-	err := global.GOODS_DB.Model(&Goods{}).Count(&count).Error
+	err := global.DB.Model(&Goods{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}
@@ -80,7 +89,7 @@ func QueryGoodsCount(params interface{}) (int64, error) {
 
 func CheckGoodsStock(goods *Goods) (bool, error) {
 	var stock int
-	err := global.GOODS_DB.Model(goods).Select("stock").Where("id = ?", goods.Id).First(&stock).Error
+	err := global.DB.Model(goods).Select("stock").Where("id = ?", goods.Id).First(&stock).Error
 	if err != nil {
 		return false, err
 	}

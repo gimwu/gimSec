@@ -5,6 +5,7 @@ option go_package = "./;api";
 
 service GoodsService{
   rpc GetGoodsById(GoodsId) returns (Goods);
+  rpc GetGoodsByIds(GoodsIds) returns (Goodss);
 }
 
 message Goods{
@@ -19,5 +20,13 @@ message Goods{
 
 message GoodsId{
   string id =1;
+}
+
+message GoodsIds{
+  repeated string id =1;
+}
+
+message Goodss{
+  repeated Goods goods = 1;
 }
 

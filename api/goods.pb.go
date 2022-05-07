@@ -162,6 +162,100 @@ func (x *GoodsId) GetId() string {
 	return ""
 }
 
+type GoodsIds struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id []string `protobuf:"bytes,1,rep,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *GoodsIds) Reset() {
+	*x = GoodsIds{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_goods_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GoodsIds) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GoodsIds) ProtoMessage() {}
+
+func (x *GoodsIds) ProtoReflect() protoreflect.Message {
+	mi := &file_goods_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GoodsIds.ProtoReflect.Descriptor instead.
+func (*GoodsIds) Descriptor() ([]byte, []int) {
+	return file_goods_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GoodsIds) GetId() []string {
+	if x != nil {
+		return x.Id
+	}
+	return nil
+}
+
+type Goodss struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Goods []*Goods `protobuf:"bytes,1,rep,name=goods,proto3" json:"goods,omitempty"`
+}
+
+func (x *Goodss) Reset() {
+	*x = Goodss{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_goods_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Goodss) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Goodss) ProtoMessage() {}
+
+func (x *Goodss) ProtoReflect() protoreflect.Message {
+	mi := &file_goods_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Goodss.ProtoReflect.Descriptor instead.
+func (*Goodss) Descriptor() ([]byte, []int) {
+	return file_goods_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Goodss) GetGoods() []*Goods {
+	if x != nil {
+		return x.Goods
+	}
+	return nil
+}
+
 var File_goods_proto protoreflect.FileDescriptor
 
 var file_goods_proto_rawDesc = []byte{
@@ -178,12 +272,19 @@ var file_goods_proto_rawDesc = []byte{
 	0x62, 0x65, 0x6c, 0x6f, 0x6e, 0x67, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x07, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x0c, 0x62, 0x65, 0x6c, 0x6f, 0x6e, 0x67, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64,
 	0x22, 0x19, 0x0a, 0x07, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x49, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x32, 0x38, 0x0a, 0x0c, 0x47,
-	0x6f, 0x6f, 0x64, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x28, 0x0a, 0x0c, 0x47,
-	0x65, 0x74, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x42, 0x79, 0x49, 0x64, 0x12, 0x0c, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x49, 0x64, 0x1a, 0x0a, 0x2e, 0x61, 0x70, 0x69, 0x2e,
-	0x47, 0x6f, 0x6f, 0x64, 0x73, 0x42, 0x08, 0x5a, 0x06, 0x2e, 0x2f, 0x3b, 0x61, 0x70, 0x69, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x1a, 0x0a, 0x08, 0x47,
+	0x6f, 0x6f, 0x64, 0x73, 0x49, 0x64, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x2a, 0x0a, 0x06, 0x47, 0x6f, 0x6f, 0x64, 0x73,
+	0x73, 0x12, 0x20, 0x0a, 0x05, 0x67, 0x6f, 0x6f, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x0a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x52, 0x05, 0x67, 0x6f,
+	0x6f, 0x64, 0x73, 0x32, 0x65, 0x0a, 0x0c, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x53, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x12, 0x28, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x42,
+	0x79, 0x49, 0x64, 0x12, 0x0c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x49,
+	0x64, 0x1a, 0x0a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x12, 0x2b, 0x0a,
+	0x0d, 0x47, 0x65, 0x74, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x42, 0x79, 0x49, 0x64, 0x73, 0x12, 0x0d,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x49, 0x64, 0x73, 0x1a, 0x0b, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x47, 0x6f, 0x6f, 0x64, 0x73, 0x73, 0x42, 0x08, 0x5a, 0x06, 0x2e, 0x2f,
+	0x3b, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -198,19 +299,24 @@ func file_goods_proto_rawDescGZIP() []byte {
 	return file_goods_proto_rawDescData
 }
 
-var file_goods_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_goods_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_goods_proto_goTypes = []interface{}{
-	(*Goods)(nil),   // 0: api.Goods
-	(*GoodsId)(nil), // 1: api.GoodsId
+	(*Goods)(nil),    // 0: api.Goods
+	(*GoodsId)(nil),  // 1: api.GoodsId
+	(*GoodsIds)(nil), // 2: api.GoodsIds
+	(*Goodss)(nil),   // 3: api.Goodss
 }
 var file_goods_proto_depIdxs = []int32{
-	1, // 0: api.GoodsService.GetGoodsById:input_type -> api.GoodsId
-	0, // 1: api.GoodsService.GetGoodsById:output_type -> api.Goods
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: api.Goodss.goods:type_name -> api.Goods
+	1, // 1: api.GoodsService.GetGoodsById:input_type -> api.GoodsId
+	2, // 2: api.GoodsService.GetGoodsByIds:input_type -> api.GoodsIds
+	0, // 3: api.GoodsService.GetGoodsById:output_type -> api.Goods
+	3, // 4: api.GoodsService.GetGoodsByIds:output_type -> api.Goodss
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_goods_proto_init() }
@@ -243,6 +349,30 @@ func file_goods_proto_init() {
 				return nil
 			}
 		}
+		file_goods_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GoodsIds); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_goods_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Goodss); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -250,7 +380,7 @@ func file_goods_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_goods_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

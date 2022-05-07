@@ -19,6 +19,7 @@ func AddSecOrderByMq(delivery amqp.Delivery) {
 	if err != nil {
 		return
 	}
+	order.Id = utils.SnowFlake.NextVal()
 	err = model.AddSecOrder(&order)
 	return
 }

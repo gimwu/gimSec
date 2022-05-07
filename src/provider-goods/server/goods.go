@@ -10,6 +10,10 @@ func GetGoods(id string) (*model.Goods, error) {
 	return model.GetGoods(id)
 }
 
+func SelectGoodsByIds(ids []string) ([]model.Goods, error) {
+	return model.GetGoodsByIds(ids)
+}
+
 func AddGoods(goods *model.Goods) error {
 	goods.Id = utils.SnowFlake.NextVal()
 	return model.AddGoods(goods)
