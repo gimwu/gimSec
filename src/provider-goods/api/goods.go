@@ -83,8 +83,9 @@ func GetGoods(c *gin.Context) {
 func QueryGoodsPage(c *gin.Context) {
 	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	order := c.Query("order")
 	logging.Debug(currentPage, pageSize)
-	data, err := server.QueryGoodsPage(nil, currentPage, pageSize)
+	data, err := server.QueryGoodsPage(order, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryGoodsPage Error:", err)
 		response.Error(c, err.Error())

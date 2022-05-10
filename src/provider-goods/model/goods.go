@@ -69,9 +69,14 @@ func DeleteGoods(goods *Goods) error {
 	return nil
 }
 
-func QueryGoodsPage(params interface{}, currentPage int, pageSize int) ([]*Goods, error) {
+func QueryGoodsPage(order string, currentPage int, pageSize int) ([]*Goods, error) {
 	var GoodsList []*Goods
-	err := global.DB.Model(&Goods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
+	var err error
+	if order != "" {
+		err = global.DB.Model(&Goods{}).Order(order).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
+	} else {
+		err = global.DB.Model(&Goods{}).Order("created_at").Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&GoodsList).Error
+	}
 	if err != nil {
 		return nil, err
 	}

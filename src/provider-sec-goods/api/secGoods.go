@@ -64,8 +64,9 @@ func DeleteSecGoods(c *gin.Context) {
 func QuerySecGoodsPage(c *gin.Context) {
 	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	order := c.Query("order")
 	logging.Debug(currentPage, pageSize)
-	data, err := server.QuerySecGoodsPage(nil, currentPage, pageSize)
+	data, err := server.QuerySecGoodsPage(order, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryGoodsPage Error:", err)
 		response.Error(c, err.Error())

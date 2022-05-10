@@ -12,9 +12,9 @@ func InitRouter() *gin.Engine {
 	r.Use(utils.Cors())
 
 	apiv1 := r.Group("/api/v1")
+	apiv1.GET("/secGoods/querySecGoodsPage", api.QuerySecGoodsPage)
 	apiv1.Use(jwt.AuthMiddleware())
 	{
-		apiv1.GET("/secGoods/querySecGoodsPage", api.QuerySecGoodsPage)
 		apiv1.POST("/secGoods", api.AddSecGoods)
 		apiv1.PUT("/secGoods", api.EditSecGoods)
 		apiv1.DELETE("/secGoods", api.DeleteSecGoods)

@@ -31,12 +31,12 @@ func DeleteGoods(id string) error {
 	return model.DeleteGoods(goods)
 }
 
-func QueryGoodsPage(params interface{}, currentPage int, pageSize int) (map[string]interface{}, error) {
-	GoodsList, err := model.QueryGoodsPage(params, currentPage, pageSize)
+func QueryGoodsPage(order string, currentPage int, pageSize int) (map[string]interface{}, error) {
+	GoodsList, err := model.QueryGoodsPage(order, currentPage, pageSize)
 	if err != nil {
 		return nil, err
 	}
-	count, err := model.QueryGoodsCount(params)
+	count, err := model.QueryGoodsCount(order)
 	if err != nil {
 		return nil, err
 	}

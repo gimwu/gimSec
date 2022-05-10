@@ -39,9 +39,15 @@ func DeleteSecGoods(secGoods *SecGoods) error {
 	return nil
 }
 
-func QuerySecGoodsPage(params interface{}, currentPage int, pageSize int) ([]*SecGoods, error) {
+func QuerySecGoodsPage(order string, currentPage int, pageSize int) ([]*SecGoods, error) {
 	var secGoodsList []*SecGoods
-	err := global.DB.Model(&SecGoods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&secGoodsList).Error
+	global.DB.Model(&SecGoods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize)
+	if order != "" {
+		global.DB.Order(order)
+	} else {
+		global.DB.Order("create_at")
+	}
+	err := global.DB.Find(&secGoodsList).Error
 	if err != nil {
 		return nil, err
 	}
