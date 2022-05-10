@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"gimSec/basic/jwt"
 	"gimSec/basic/logging"
 	"gimSec/basic/response"
 	"gimSec/basic/utils"
@@ -11,8 +12,19 @@ import (
 )
 
 func AddGoods(c *gin.Context) {
+	tokenString := c.GetHeader("Authorization")
+	tokenString = tokenString[7:]
+	_, claims, err := jwt.ParseToken(tokenString)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	userId := claims.UserId
+
 	json := model.Goods{}
-	err := utils.BindJson(c, &json)
+	err = utils.BindJson(c, &json)
+	json.BelongUsernameId = userId
 	if err != nil {
 		logging.Error(err)
 		response.Error(c, err.Error())
