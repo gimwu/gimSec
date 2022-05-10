@@ -108,7 +108,7 @@ func AddSecOrder(c *gin.Context) {
 	//TODO 未到达时间 直接返回
 	now := time.Now().Unix()
 	if now < secGoods.SecKillStart || now > secGoods.SecKillEnd {
-		response.Info(c, 200, "未达到开始活动时间")
+		response.Info(c, 201, "未达到开始活动时间")
 		logging.Info("未达到开始活动时间")
 		return
 	}
