@@ -32,6 +32,13 @@ func AddSecOrder(goods *SecGoods) error {
 	return nil
 }
 
+func DeleteSecGoods(secGoods *SecGoods) error {
+	if err := global.DB.Delete(&secGoods).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func QuerySecGoodsPage(params interface{}, currentPage int, pageSize int) ([]*SecGoods, error) {
 	var secGoodsList []*SecGoods
 	err := global.DB.Model(&SecGoods{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&secGoodsList).Error
@@ -57,4 +64,11 @@ func GetSecGoodsById(id string) (*SecGoods, error) {
 		return nil, err
 	}
 	return &secGoods, nil
+}
+
+func EditSecGoods(secGoods *SecGoods) error {
+	if err := global.DB.Updates(secGoods).Error; err != nil {
+		return err
+	}
+	return nil
 }

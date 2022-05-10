@@ -16,6 +16,8 @@ func InitRouter() *gin.Engine {
 	{
 		apiv1.GET("/secGoods/querySecGoodsPage", api.QuerySecGoodsPage)
 		apiv1.POST("/secGoods", api.AddSecGoods)
+		apiv1.PUT("/secGoods", api.EditSecGoods)
+		apiv1.DELETE("/secGoods", api.DeleteSecGoods)
 	}
 	return r
 }

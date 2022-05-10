@@ -52,7 +52,8 @@ func AddSecOrder(c *gin.Context) {
 
 	//TODO 判断商品是否已经存入缓存中 如果不存在则写入缓存中
 	goodsStock1, err := global.REDIS.HGet(context.Background(), goodsId, "stock").Result()
-	var secGoods *api.SecGoods
+	secGoods := &api.SecGoods{}
+	var secGoodsMap map[string]string
 	if err == redis.Nil {
 		var err2 error
 		secGoods, err2 = server.GetGoodsById(goodsId)
@@ -70,11 +71,48 @@ func AddSecOrder(c *gin.Context) {
 			"content", secGoods.Content,
 			"secKillStart", secGoods.SecKillStart,
 			"secKillEnd", secGoods.SecKillEnd)
+
+		secGoodsMap["id"] = secGoods.Id
+		secGoodsMap["name"] = secGoods.Name
+		secGoodsMap["price"] = secGoods.Price
+		secGoodsMap["photo"] = secGoods.Photo
+		secGoodsMap["content"] = secGoods.Content
+		secGoodsMap["stock"] = strconv.FormatInt(secGoods.Stock, 10)
+		secGoodsMap["secKillStart"] = strconv.FormatInt(secGoods.SecKillStart, 10)
+		secGoodsMap["secKillEnd"] = strconv.FormatInt(secGoods.SecKillEnd, 10)
+	} else {
+		var err2 error
+		secGoodsMap, err2 = global.REDIS.HGetAll(context.Background(), goodsId).Result()
+		if err2 != nil {
+			logging.Error(err.Error())
+			response.Error(c, err)
+			return
+		}
+		secGoods.Id = secGoodsMap["id"]
+		secGoods.Name = secGoodsMap["name"]
+		secGoods.Price = secGoodsMap["price"]
+		stock, _ := strconv.ParseInt(secGoodsMap["stock"], 10, 64)
+		secGoods.Stock = stock
+		secGoods.Photo = secGoodsMap["photo"]
+		secGoods.Content = secGoodsMap["content"]
+		secKillStart, _ := strconv.ParseInt(secGoodsMap["secKillStart"], 10, 64)
+		secGoods.SecKillStart = secKillStart
+		secKillEnd, _ := strconv.ParseInt(secGoodsMap["secKillEnd"], 10, 64)
+		secGoods.SecKillEnd = secKillEnd
 	}
 	if err != nil && err != redis.Nil {
 		logging.Error(err.Error())
 		response.Error(c, err)
+		return
 	}
+	//TODO 未到达时间 直接返回
+	now := time.Now().Unix()
+	if now < secGoods.SecKillStart || now > secGoods.SecKillEnd {
+		response.Info(c, 200, "未达到开始活动时间")
+		logging.Info("未达到开始活动时间")
+		return
+	}
+
 	goodsStock, err := strconv.Atoi(goodsStock1)
 
 	//库存小于0 则直接返回

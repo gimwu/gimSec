@@ -26,8 +26,8 @@ func AddAdmin(c *gin.Context) {
 	}
 
 	if isExist {
-		logging.Info("register Telephone is exist")
-		response.Error(c, "register Telephone is exit")
+		logging.Info("register Username is exist")
+		response.Error(c, "register Username is exit")
 		return
 	}
 
@@ -71,11 +71,9 @@ func AdminLogin(c *gin.Context) {
 }
 
 func QueryAdminPage(c *gin.Context) {
-	json := make(map[string]interface{})
-	utils.BindJson(c, &json)
 	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
-	data, err := server.QueryAdminPage(&json, currentPage, pageSize)
+	data, err := server.QueryAdminPage(nil, currentPage, pageSize)
 	if err != nil {
 		logging.Error("QueryAdminPage Error:", err)
 		response.Error(c, err.Error())

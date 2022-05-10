@@ -12,8 +12,13 @@ import (
 
 func AddGoods(c *gin.Context) {
 	json := model.Goods{}
-	utils.BindJson(c, &json)
-	err := server.AddGoods(&json)
+	err := utils.BindJson(c, &json)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	err = server.AddGoods(&json)
 	if err != nil {
 		logging.Error(err)
 		response.Error(c, err.Error())
@@ -23,8 +28,13 @@ func AddGoods(c *gin.Context) {
 }
 
 func DeleteGoods(c *gin.Context) {
-	id := c.Query("id")
-	err := server.DeleteGoods(id)
+	var params map[string]string
+	err := utils.BindJson(c, &params)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+	err = server.DeleteGoods(params["id"])
 	if err != nil {
 		response.Error(c, err.Error())
 		return

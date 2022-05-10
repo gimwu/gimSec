@@ -111,8 +111,14 @@ func GetUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	id := c.Query("id")
-	user, err := server.DeleteUser(id)
+	var params map[string]string
+	err := utils.BindJson(c, &params)
+	if err != nil {
+		response.Error(c, err.Error())
+		logging.Error(err)
+		return
+	}
+	user, err := server.DeleteUser(params["id"])
 	if err != nil {
 		logging.Error("DeleteUser error :", err)
 		response.Error(c, err.Error())
