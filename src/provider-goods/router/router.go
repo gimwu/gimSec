@@ -19,6 +19,10 @@ func InitRouter() *gin.Engine {
 		apiv1.POST("/goods", v1.AddGoods)
 		apiv1.DELETE("/goods", v1.DeleteGoods)
 		apiv1.PUT("/goods", v1.EditGoods)
+
+		apiv1.GET("/goods/getMyCart", v1.GetMyCart)
+		apiv1.POST("/goods/addCart", v1.AddCart)
+		apiv1.DELETE("/godos/deleteCart", v1.DeleteCart)
 	}
 
 	return r

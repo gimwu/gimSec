@@ -12,22 +12,22 @@ type Goods struct {
 	model.StateFullEntity
 
 	//name 商品名称
-	Name string `gorm:"type:varchar(255);not null"`
+	Name string `gorm:"type:varchar(255);not null" json:"name"`
 
 	//price 商品价格
-	Price decimal.Decimal
+	Price decimal.Decimal `json:"price"`
 
 	//stock 商品库存
-	Stock int
+	Stock int `json:"stock"`
 
 	//photo 商品图片
-	Photo string `gorm:"type:varchar(255);not null"`
+	Photo string `gorm:"type:varchar(255);not null" json:"photo"`
 
 	//商品描述
-	Content string `gorm:"type:varchar(255);not null"`
+	Content string `gorm:"type:varchar(255);not null" json:"content"`
 
 	//商品所属商家id
-	BelongUsernameId string `gorm:"type:varchar(255);not null"`
+	BelongUsernameId string `gorm:"type:varchar(255);not null" json:"BelongUsernameId"`
 }
 
 func GetGoods(id string) (*Goods, error) {
