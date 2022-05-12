@@ -53,7 +53,7 @@ func AddSecOrder(c *gin.Context) {
 	//TODO 判断商品是否已经存入缓存中 如果不存在则写入缓存中
 	goodsStock1, err := global.REDIS.HGet(context.Background(), goodsId, "stock").Result()
 	secGoods := &api.SecGoods{}
-	var secGoodsMap map[string]string
+	secGoodsMap := make(map[string]string, 0)
 	if err == redis.Nil {
 		var err2 error
 		secGoods, err2 = server.GetGoodsById(goodsId)
@@ -80,6 +80,7 @@ func AddSecOrder(c *gin.Context) {
 		secGoodsMap["stock"] = strconv.FormatInt(secGoods.Stock, 10)
 		secGoodsMap["secKillStart"] = strconv.FormatInt(secGoods.SecKillStart, 10)
 		secGoodsMap["secKillEnd"] = strconv.FormatInt(secGoods.SecKillEnd, 10)
+		goodsStock1 = strconv.FormatInt(secGoods.Stock, 10)
 	} else {
 		var err2 error
 		secGoodsMap, err2 = global.REDIS.HGetAll(context.Background(), goodsId).Result()

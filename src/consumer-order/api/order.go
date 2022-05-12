@@ -101,3 +101,7 @@ func QueryOrderPage(c *gin.Context) {
 	}
 	response.Success(c, data)
 }
+
+func TestJwt(c *gin.Context) {
+	response.Success(c, "成功")
+}

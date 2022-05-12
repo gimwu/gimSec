@@ -18,16 +18,23 @@ import (
 func GetSecGoods(c *gin.Context) {
 	id := c.Query("id")
 
-	result, err := global.REDIS.Get(context.Background(), id).Result()
-	if err == redis.Nil {
+	result, err := global.REDIS.HGetAll(context.Background(), id).Result()
+	if len(result) == 0 {
 		goods, err := server.GetSecGoods(id)
 		if err != nil {
 			logging.Error(err)
 			response.Error(c, err.Error())
 			return
 		}
-		marshal, _ := json.Marshal(goods)
-		_, err = global.REDIS.Set(context.Background(), id, marshal, redis.KeepTTL).Result()
+		_, err = global.REDIS.HSet(context.Background(), id,
+			"id", goods.Id,
+			"name", goods.Name,
+			"price", goods.Price.String(),
+			"stock", goods.Stock,
+			"photo", goods.Photo,
+			"content", goods.Content,
+			"secKillStart", goods.SecKillStart,
+			"secKillEnd", goods.SecKillEnd).Result()
 		if err != nil {
 			response.Error(c, err.Error())
 			logging.Error(err)
@@ -41,21 +48,18 @@ func GetSecGoods(c *gin.Context) {
 		response.Error(c, err.Error())
 		return
 	}
-	var res map[string]interface{}
-	err2 := json.Unmarshal([]byte(result), &res)
-	if err2 != nil {
-		logging.Error(err2)
-		response.Error(c, err2.Error())
-		return
-	}
-
-	response.Success(c, res)
+	response.Success(c, result)
 }
 
 func AddSecGoods(c *gin.Context) {
 	var secGoods model.SecGoods
-	utils.BindJson(c, &secGoods)
-	err := server.AddSecGoods(&secGoods)
+	err := utils.BindJson(c, &secGoods)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	err = server.AddSecGoods(&secGoods)
 	if err != nil {
 		logging.Error(err)
 		response.Error(c, err.Error())
