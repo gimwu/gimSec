@@ -9,7 +9,7 @@ func AddOrder(userId string, goodss []*api.Goods) (*model.Order, error) {
 	return model.AddOrder(userId, goodss)
 }
 
-func QueryOrderPage(params interface{}, currentPage int, pageSize int) (map[string]interface{}, error) {
+func QueryOrderPage(params map[string]string, currentPage int, pageSize int) (map[string]interface{}, error) {
 	orderList, err := model.QueryOrderPage(params, currentPage, pageSize)
 	if err != nil {
 		return nil, err

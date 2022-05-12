@@ -168,3 +168,27 @@ func QuerySecOrderPage(c *gin.Context) {
 	}
 	response.Success(c, data)
 }
+
+func QueryMyOrder(c *gin.Context) {
+	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	params := c.QueryMap("params")
+	tokenString := c.GetHeader("Authorization")
+	tokenString = tokenString[7:]
+	_, claims, err := jwt.ParseToken(tokenString)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	userId := claims.UserId
+	params["userId"] = userId
+
+	data, err := server.QuerySecOrderPage(params, currentPage, pageSize)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	response.Success(c, data)
+}

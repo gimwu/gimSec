@@ -8,6 +8,17 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type OrderStatusEnum int
+
+const (
+	_ = iota
+	NOT_PAY
+	PAY
+	SEND
+	SUCCESS
+	FAIL
+)
+
 //Order 订单表
 type Order struct {
 	//继承父类
@@ -17,7 +28,7 @@ type Order struct {
 	Price decimal.Decimal
 
 	//OrderStatus 订单状态 1待付款 2待发货 3待收获 4已完成
-	OrderStatus int `gorm:"type:int;not null"`
+	OrderStatus OrderStatusEnum `gorm:"type:int;not null"`
 
 	//所属用户id
 	BelongUserId string `gorm:"type:varchar(255);not null"`
@@ -67,18 +78,28 @@ func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {
 	return order, nil
 }
 
-func QueryOrderPage(params interface{}, currentPage int, pageSize int) ([]*Order, error) {
+func QueryOrderPage(params map[string]string, currentPage int, pageSize int) ([]*Order, error) {
 	var orderList []*Order
-	err := global.DB.Model(&Order{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&orderList).Error
+	tx := global.DB.Model(&Order{})
+
+	if params["belongUserId"] != "" {
+		tx.Where("belong_user_id = ?", params["belongUserId"])
+	}
+	err := tx.Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&orderList).Error
 	if err != nil {
 		return nil, err
 	}
 	return orderList, nil
 }
 
-func QueryOrderCount(params interface{}) (int64, error) {
+func QueryOrderCount(params map[string]string) (int64, error) {
 	var count int64
-	err := global.DB.Model(&Order{}).Count(&count).Error
+	tx := global.DB.Model(&Order{})
+
+	if params["belongUserId"] != "" {
+		tx.Where("belong_user_id = ?", params["belongUserId"])
+	}
+	err := tx.Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

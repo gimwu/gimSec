@@ -30,18 +30,28 @@ func AddSecOrder(order *SecOrder) error {
 	return nil
 }
 
-func QuerySecOrderPage(params interface{}, currentPage int, pageSize int) ([]*SecOrder, error) {
+func QuerySecOrderPage(params map[string]string, currentPage int, pageSize int) ([]*SecOrder, error) {
 	var secOrderList []*SecOrder
-	err := global.DB.Model(&SecOrder{}).Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&secOrderList).Error
+	tx := global.DB.Model(&SecOrder{})
+
+	if params["userId"] != "" {
+		tx.Where("user_id = ?", params["userId"])
+	}
+	err := tx.Offset((currentPage - 1) * pageSize).Limit(pageSize).Find(&secOrderList).Error
 	if err != nil {
 		return nil, err
 	}
 	return secOrderList, nil
 }
 
-func QuerySecOrderCount(params interface{}) (int64, error) {
+func QuerySecOrderCount(params map[string]string) (int64, error) {
 	var count int64
-	err := global.DB.Model(&SecOrder{}).Count(&count).Error
+	tx := global.DB.Model(&SecOrder{})
+
+	if params["userId"] != "" {
+		tx.Where("user_id = ?", params["userId"])
+	}
+	err := tx.Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

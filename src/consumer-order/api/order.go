@@ -43,6 +43,30 @@ func AddOrder(c *gin.Context) {
 	response.Success(c, order, "下单成功")
 }
 
+func QueryMyOrder(c *gin.Context) {
+	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	params := c.QueryMap("params")
+	tokenString := c.GetHeader("Authorization")
+	tokenString = tokenString[7:]
+	_, claims, err := jwt.ParseToken(tokenString)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	userId := claims.UserId
+	params["belongUserId"] = userId
+
+	data, err := server.QueryOrderPage(params, currentPage, pageSize)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	response.Success(c, data)
+}
+
 func QueryOrderPage(c *gin.Context) {
 	currentPage, _ := strconv.Atoi(c.Query("pageNum"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
