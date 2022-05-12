@@ -4,6 +4,7 @@ import (
 	"gimSec/basic/global"
 	"gimSec/basic/logging"
 	"gimSec/basic/utils"
+	"gimSec/src/consumer-order/model"
 )
 
 func Gorm() {
@@ -12,4 +13,6 @@ func Gorm() {
 	if err != nil {
 		logging.Error(err)
 	}
+
+	global.DB.AutoMigrate(&model.Order{})
 }

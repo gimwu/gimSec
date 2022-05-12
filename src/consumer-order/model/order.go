@@ -32,6 +32,8 @@ type Order struct {
 
 	//所属用户id
 	BelongUserId string `gorm:"type:varchar(255);not null"`
+
+	Addr string `gorm:"type:varchar(255);not null""`
 }
 
 func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {

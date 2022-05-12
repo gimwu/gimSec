@@ -45,9 +45,13 @@ func AddUser(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	var user model.User
-	utils.BindJson(c, &user)
-
-	err := server.Login(&user)
+	err := utils.BindJson(c, &user)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
+	err = server.Login(&user)
 	if err != nil {
 		logging.Error(err)
 		response.Error(c, err.Error())
@@ -83,7 +87,12 @@ func EditUser(c *gin.Context) {
 		return
 	}
 
-	utils.BindJson(c, &user)
+	err = utils.BindJson(c, &user)
+	if err != nil {
+		logging.Error(err)
+		response.Error(c, err.Error())
+		return
+	}
 
 	err = server.EditUser(user)
 	if err != nil {

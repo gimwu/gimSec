@@ -48,10 +48,7 @@ func GetUser(id string) (*User, error) {
 
 func EditUser(user *User) error {
 	err := global.DB.Updates(user).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func DeleteUser(user *User) (*User, error) {

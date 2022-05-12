@@ -22,6 +22,11 @@ func InitRouter() *gin.Engine {
 		apiv1.GET("/user", v1.GetUser)
 		apiv1.DELETE("/user", v1.DeleteUser)
 		apiv1.PUT("/user/logout", v1.Logout)
+
+		apiv1.POST("/user/addr", v1.AddAddr)
+		apiv1.PUT("/user/addr", v1.EditAddr)
+		apiv1.DELETE("/user/addr", v1.DeleteAddr)
+		apiv1.GET("/user/queryMyAddr", v1.QueryMyAddr)
 	}
 
 	return r
