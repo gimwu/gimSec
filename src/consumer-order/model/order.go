@@ -11,12 +11,12 @@ import (
 type OrderStatusEnum int
 
 const (
-	_ = iota
-	NOT_PAY
-	PAY
-	SEND
-	SUCCESS
-	FAIL
+	_       = iota
+	NOT_PAY //未付款
+	PAY     //付款未发货
+	SEND    //发货
+	SUCCESS //成功到货
+	FAIL    //取消订单
 )
 
 //Order 订单表
@@ -106,4 +106,20 @@ func QueryOrderCount(params map[string]string) (int64, error) {
 		return 0, err
 	}
 	return count, nil
+}
+
+func GetOrder(id string) (*Order, error) {
+	var order Order
+	err := global.DB.Where("id = ?", id).First(&order).Error
+	if err != nil {
+		return nil, err
+	}
+	return &order, nil
+}
+
+func UpdateOrder(order *Order) error {
+	if err := global.DB.Updates(order).Error; err != nil {
+		return err
+	}
+	return nil
 }
