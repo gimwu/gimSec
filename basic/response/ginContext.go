@@ -30,7 +30,7 @@ func Error(c *gin.Context, data interface{}) {
 }
 
 func Info(c *gin.Context, code HTTPStatusNum, data interface{}) {
-	c.JSON(200, gin.H{
+	c.JSON(int(code), gin.H{
 		"code": code,
 		"data": data,
 	})

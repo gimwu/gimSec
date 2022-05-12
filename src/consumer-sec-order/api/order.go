@@ -45,7 +45,7 @@ func AddSecOrder(c *gin.Context) {
 		return
 	}
 	if b == 1 {
-		response.Info(c, 200, "已经参与秒杀")
+		response.Info(c, 202, "已经参与秒杀")
 		return
 	}
 	//TODO 商品是否有库存
@@ -118,11 +118,11 @@ func AddSecOrder(c *gin.Context) {
 
 	//库存小于0 则直接返回
 	if goodsStock <= 0 {
-		response.Info(c, 200, "商品已抢购一空")
+		response.Info(c, 203, "商品已抢购一空")
 		return
 	}
 	//TODO 预扣库存
-	result, err := global.REDIS.SetNX(context.Background(), goodsIDAndUserId, "1", 5*time.Second).Result()
+	result, err := global.REDIS.SetNX(context.Background(), goodsIDAndUserId, "1", 5*time.Minute).Result()
 	if err != nil {
 		logging.Error(err)
 		response.Error(c, err.Error())
@@ -152,7 +152,6 @@ func AddSecOrder(c *gin.Context) {
 	}
 	//TODO 结束
 
-	global.REDIS.Del(context.Background(), goodsIDAndUserId)
 	response.Success(c, "200", "秒杀成功")
 }
 
