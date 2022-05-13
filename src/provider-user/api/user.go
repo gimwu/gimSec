@@ -76,6 +76,31 @@ func Login(c *gin.Context) {
 	response.Success(c, user, token)
 }
 
+func InitUser(c *gin.Context) {
+	var num int64
+	num = 18000000000
+	for i := 0; i < 1000; i++ {
+		user := &model.User{
+			Name:          strconv.FormatInt(num, 10),
+			Telephone:     strconv.FormatInt(num, 10),
+			Password:      strconv.FormatInt(123456, 10),
+			UserType:      "",
+			LastTimeLogin: time.Time{},
+		}
+		user.LastTimeLogin = time.Now()
+
+		err := server.AddUser(user)
+		if err != nil {
+			logging.Error(err)
+			response.Error(c, err.Error())
+			return
+		}
+		num++
+	}
+	response.Success(c, "200")
+
+}
+
 func EditUser(c *gin.Context) {
 	id := c.Query("id")
 	logging.Debug(id)

@@ -43,6 +43,7 @@ func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {
 
 	price := decimal.Decimal{}
 	orderItems := make([]OrderGoods, 0)
+	goodsIds := make([]string, 0)
 	for _, goods := range goodss {
 		fromString, _ := decimal.NewFromString(goods.Price)
 		price = decimal.Sum(price, fromString)
@@ -52,6 +53,7 @@ func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {
 			OrderItemId:    goods.Id,
 			OrderItemPrice: decimal.Decimal{},
 		}
+		goodsIds = append(goodsIds, goods.Id)
 		orderGoods.Id = utils.SnowFlake.NextVal()
 		orderItems = append(orderItems, *orderGoods)
 
@@ -63,7 +65,12 @@ func AddOrder(userId string, goodss []*api.Goods) (*Order, error) {
 	}
 	order.Id = orderId
 
-	err := tx.Model(&Order{}).Create(&order).Error
+	err := tx.Exec("update goods set stock = stock -1 where id in ?", goodsIds).Error
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Model(&Order{}).Create(&order).Error
 	if err != nil {
 		return nil, err
 	}

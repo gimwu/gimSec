@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gimSec/api"
 	"gimSec/basic/global"
 	"gimSec/basic/jwt"
 	"gimSec/basic/logging"
@@ -13,8 +12,6 @@ import (
 	"gimSec/src/consumer-sec-order/model"
 	"gimSec/src/consumer-sec-order/server"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v8"
-	"github.com/shopspring/decimal"
 	"strconv"
 	"time"
 )
@@ -50,58 +47,8 @@ func AddSecOrder(c *gin.Context) {
 	}
 	//TODO 商品是否有库存
 
-	//TODO 判断商品是否已经存入缓存中 如果不存在则写入缓存中
-	goodsStock1, err := global.REDIS.HGet(context.Background(), goodsId, "stock").Result()
-	secGoods := &api.SecGoods{}
-	secGoodsMap := make(map[string]string, 0)
-	if err == redis.Nil {
-		var err2 error
-		secGoods, err2 = server.GetGoodsById(goodsId)
-		if err2 != nil {
-			logging.Error(err2)
-			response.Error(c, err2.Error())
-			return
-		}
-		global.REDIS.HSet(context.Background(), goodsId,
-			"id", secGoods.Id,
-			"name", secGoods.Name,
-			"price", secGoods.Price,
-			"stock", secGoods.Stock,
-			"photo", secGoods.Photo,
-			"content", secGoods.Content,
-			"secKillStart", secGoods.SecKillStart,
-			"secKillEnd", secGoods.SecKillEnd)
-
-		secGoodsMap["id"] = secGoods.Id
-		secGoodsMap["name"] = secGoods.Name
-		secGoodsMap["price"] = secGoods.Price
-		secGoodsMap["photo"] = secGoods.Photo
-		secGoodsMap["content"] = secGoods.Content
-		secGoodsMap["stock"] = strconv.FormatInt(secGoods.Stock, 10)
-		secGoodsMap["secKillStart"] = strconv.FormatInt(secGoods.SecKillStart, 10)
-		secGoodsMap["secKillEnd"] = strconv.FormatInt(secGoods.SecKillEnd, 10)
-		goodsStock1 = strconv.FormatInt(secGoods.Stock, 10)
-	} else {
-		var err2 error
-		secGoodsMap, err2 = global.REDIS.HGetAll(context.Background(), goodsId).Result()
-		if err2 != nil {
-			logging.Error(err.Error())
-			response.Error(c, err)
-			return
-		}
-		secGoods.Id = secGoodsMap["id"]
-		secGoods.Name = secGoodsMap["name"]
-		secGoods.Price = secGoodsMap["price"]
-		stock, _ := strconv.ParseInt(secGoodsMap["stock"], 10, 64)
-		secGoods.Stock = stock
-		secGoods.Photo = secGoodsMap["photo"]
-		secGoods.Content = secGoodsMap["content"]
-		secKillStart, _ := strconv.ParseInt(secGoodsMap["secKillStart"], 10, 64)
-		secGoods.SecKillStart = secKillStart
-		secKillEnd, _ := strconv.ParseInt(secGoodsMap["secKillEnd"], 10, 64)
-		secGoods.SecKillEnd = secKillEnd
-	}
-	if err != nil && err != redis.Nil {
+	secGoods, err := model.GetSecGoodsById(goodsId)
+	if err != nil {
 		logging.Error(err.Error())
 		response.Error(c, err)
 		return
@@ -114,44 +61,28 @@ func AddSecOrder(c *gin.Context) {
 		return
 	}
 
-	goodsStock, err := strconv.Atoi(goodsStock1)
-
-	//库存小于0 则直接返回
-	if goodsStock <= 0 {
-		response.Info(c, 203, "商品已抢购一空")
-		return
-	}
-	//TODO 预扣库存
-	result, err := global.REDIS.SetNX(context.Background(), goodsIDAndUserId, "1", 5*time.Minute).Result()
+	err = server.AddSecOrder(secGoods)
 	if err != nil {
-		logging.Error(err)
 		response.Error(c, err.Error())
+		logging.Error(err)
 		return
 	}
-	if result != true {
-		logging.Error("预扣库存加锁失败")
-		response.Error(c, "预扣库存加锁失败")
-		return
-	}
-	all, err := global.REDIS.HGetAll(context.Background(), goodsId).Result()
 
 	order := &model.SecOrder{
 		UserId:      userId,
 		GoodsId:     goodsId,
-		Price:       decimal.RequireFromString(all["price"]),
+		Price:       secGoods.Price,
 		OrderStatus: 1,
 	}
-	global.REDIS.HIncrBy(context.Background(), goodsId, "stock", -1)
+
 	//TODO 异步处理，生成订单
 	marshal, err := json.Marshal(order)
 	err = global.CH.PublishToQueue(marshal, "order")
 	if err != nil {
-		logging.Error(err)
 		response.Error(c, err.Error())
+		logging.Error(err)
 		return
 	}
-	//TODO 结束
-
 	response.Success(c, "200", "秒杀成功")
 }
 

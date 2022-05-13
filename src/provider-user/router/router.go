@@ -15,6 +15,8 @@ func InitRouter() *gin.Engine {
 	apiv1.POST("/user", v1.AddUser)
 	apiv1.POST("/user/login", v1.Login)
 
+	apiv1.GET("/user/init", v1.InitUser)
+
 	apiv1.Use(jwt.AuthMiddleware())
 	{
 		apiv1.GET("/user/queryUserPage", v1.QueryUserPage)

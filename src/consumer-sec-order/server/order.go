@@ -7,9 +7,8 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func AddSecOrder(order *model.SecOrder) error {
-	order.Id = utils.SnowFlake.NextVal()
-	err := model.AddSecOrder(order)
+func AddSecOrder(goods *model.SecGoods) error {
+	err := model.UpdateSecGoods(goods)
 	return err
 }
 

@@ -22,14 +22,6 @@ type SecOrder struct {
 	OrderStatus int `gorm:"type:int;not null"`
 }
 
-func AddSecOrder(order *SecOrder) error {
-	err := global.DB.Create(order).Error
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func QuerySecOrderPage(params map[string]string, currentPage int, pageSize int) ([]*SecOrder, error) {
 	var secOrderList []*SecOrder
 	tx := global.DB.Model(&SecOrder{})
